@@ -82,6 +82,42 @@
             <Setter Property="Padding" Value="15,10"/>
             <Setter Property="Margin" Value="0,8"/>
         </Style>
+
+        <!-- Sync button style -->
+        <Style x:Key="SyncButtonStyle" TargetType="Button">
+            <Setter Property="Height" Value="35"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Background" Value="#2ecc71"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="15,5"/>
+            <Setter Property="Margin" Value="0,15,0,5"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                                BorderBrush="{TemplateBinding BorderBrush}" 
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="4">
+                            <ContentPresenter HorizontalAlignment="Center" 
+                                              VerticalAlignment="Center" 
+                                              Margin="{TemplateBinding Padding}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#27ae60"/>
+                                <Setter Property="Cursor" Value="Hand"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="#1e8449"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </Window.Resources>
 
     <Grid>
@@ -95,10 +131,10 @@
         <!-- Left Sidebar with Buttons -->
         <StackPanel Grid.Column="0" Background="#222233" Margin="0">
             <TextBlock Text="NAVIGATION" Foreground="#AAAAAA" FontSize="12" Margin="15,20,15,10" />
-            <Button Content="User Info" Click="ShowUserInfoView_Click" Style="{StaticResource SidebarButtonStyle}"/>
+            <Button Content="General Settings" Click="ShowGlobalSettingsView_Click" Style="{StaticResource SidebarButtonStyle}"/>
+            <Button Content="Weapon Delay" Click="ShowMacroSettingsView_Click" Style="{StaticResource SidebarButtonStyle}"/>
             <Button Content="Settings" Click="ShowSettingsView_Click" Style="{StaticResource SidebarButtonStyle}"/>
-            <Button Content="Macro Settings" Click="ShowMacroSettingsView_Click" Style="{StaticResource SidebarButtonStyle}"/>
-            <Button Content="Global Settings" Click="ShowGlobalSettingsView_Click" Style="{StaticResource SidebarButtonStyle}"/>
+            <Button Content="User Info / Help" Click="ShowUserInfoView_Click" Style="{StaticResource SidebarButtonStyle}"/>
         </StackPanel>
 
         <!-- Main Content Area -->
@@ -147,25 +183,25 @@
 
                                     <Border Style="{StaticResource SettingsContainerStyle}">
                                         <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*"/>
-                                            <ColumnDefinition Width="Auto"/>
-                                            <ColumnDefinition Width="Auto"/>
-                                        </Grid.ColumnDefinitions>
-                                        <TextBlock Text="Weapon Delay Key" FontSize="16" FontWeight="SemiBold" VerticalAlignment="Center"/>
-                                        <TextBlock x:Name="SelectedKeyText2" Text="None" Grid.Column="1" Margin="0,0,10,0" 
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Text="Weapon Delay Key" FontSize="16" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                                            <TextBlock x:Name="SelectedKeyText2" Text="None" Grid.Column="1" Margin="0,0,10,0" 
                                            VerticalAlignment="Center" FontSize="14"/>
-                                        <Button x:Name="KeyDetectionButton2" Content="Press a Key" Grid.Column="2" Click="StartKeyOrMouseDetection"
+                                            <Button x:Name="KeyDetectionButton2" Content="Press a Key" Grid.Column="2" Click="StartKeyOrMouseDetection"
                                         Padding="12,5" Background="#3498db" Foreground="White" BorderThickness="0">
-                                            <Button.Resources>
-                                                <Style TargetType="Border">
-                                                    <Setter Property="CornerRadius" Value="4"/>
-                                                </Style>
-                                            </Button.Resources>
-                                        </Button>
-                                    </Grid>
-                                        </Border>
-                                        <!-- Pixel Range Slider Setting -->
+                                                <Button.Resources>
+                                                    <Style TargetType="Border">
+                                                        <Setter Property="CornerRadius" Value="4"/>
+                                                    </Style>
+                                                </Button.Resources>
+                                            </Button>
+                                        </Grid>
+                                    </Border>
+                                    <!-- Pixel Range Slider Setting -->
                                     <Border Style="{StaticResource SettingsContainerStyle}">
                                         <StackPanel>
                                             <Grid>
@@ -182,7 +218,23 @@
                                         ValueChanged="PixelRangeSlider_ValueChanged"/>
                                         </StackPanel>
                                     </Border>
-
+                                    <!-- Audio Range Slider Setting -->
+                                    <Border Style="{StaticResource SettingsContainerStyle}">
+                                        <StackPanel>
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Text="Volume Range (Voices)" FontSize="16" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                                                <TextBlock x:Name="AudioRangeValue" Text="5" Grid.Column="1" VerticalAlignment="Center" 
+                                               FontSize="14" FontWeight="SemiBold"/>
+                                            </Grid>
+                                            <Slider x:Name="AudioRangeSlider" Minimum="0" Maximum="10" Value="5" 
+                                        TickFrequency="1" IsSnapToTickEnabled="True" Margin="0,10,0,0"
+                                        ValueChanged="AudioRangeSlider_ValueChanged"/>
+                                        </StackPanel>
+                                    </Border>
                                     <!-- Resolution Display -->
                                     <Border Style="{StaticResource SettingsContainerStyle}">
                                         <Grid>
@@ -191,10 +243,15 @@
                                                 <ColumnDefinition Width="Auto"/>
                                             </Grid.ColumnDefinitions>
                                             <TextBlock Text="RES. DETECTED" FontSize="16" FontWeight="SemiBold" VerticalAlignment="Center"/>
-                                            <TextBlock Text="1920x1080" Grid.Column="1" VerticalAlignment="Center" 
-                                           FontSize="14" FontWeight="SemiBold"/>
+                                            <TextBlock x:Name="ResolutionTextBlock" Grid.Column="1" VerticalAlignment="Center" 
+                  FontSize="14" FontWeight="SemiBold"/>
                                         </Grid>
                                     </Border>
+
+                                    <!-- Sync Button for Settings View -->
+                                    <Button x:Name="SyncButtonSettings" Content="Sync All Settings to File" 
+                                            Style="{StaticResource SyncButtonStyle}"
+                                            Click="SyncAllSettings_Click"/>
                                 </StackPanel>
                             </ScrollViewer>
                         </ui:CardControl.Content>
@@ -219,21 +276,132 @@
             </Grid>
 
             <Grid x:Name="MacroSettingsView" Visibility="Collapsed">
-                <!-- Macro Settings content would go here -->
-                <TextBlock Text="Macro Settings View" FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <!-- Header -->
+                <Border Grid.Row="0" Background="#343A40" Padding="10">
+                    <TextBlock Text="Weapons Settings" FontSize="20" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center"/>
+                </Border>
+
+                <!-- Content -->
+                <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                    <StackPanel Margin="15">
+                        <!-- Weapon Delay Section -->
+                        <Border Background="#F8F9FA" CornerRadius="6" Padding="12" Margin="0,0,0,10" BorderBrush="#DEE2E6" BorderThickness="1">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+
+                                <!-- Section Header -->
+                                <Border Grid.Row="0" BorderBrush="#DEE2E6" BorderThickness="0,0,0,1" Padding="0,0,0,6" Margin="0,0,0,8">
+                                    <TextBlock Text="Weapon Delay (ms)" FontSize="16" FontWeight="SemiBold" Foreground="#212529"/>
+                                </Border>
+
+                                <!-- Weapon Inputs - More Compact Grid -->
+                                <Grid Grid.Row="1">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="32"/>
+                                        <RowDefinition Height="32"/>
+                                        <RowDefinition Height="32"/>
+                                        <RowDefinition Height="32"/>
+                                        <RowDefinition Height="32"/>
+                                        <RowDefinition Height="32"/>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <!-- Vandal -->
+                                    <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center" Margin="4,0">
+                                        <TextBlock Text="&#xE7E8;" FontFamily="Segoe MDL2 Assets" VerticalAlignment="Center" Foreground="#495057" Margin="0,0,6,0"/>
+                                        <TextBlock Text="Vandal" FontWeight="Medium" Foreground="#495057"/>
+                                    </StackPanel>
+                                    <Border Grid.Row="0" Grid.Column="1" CornerRadius="3" Background="White" BorderBrush="#CED4DA" BorderThickness="1" Margin="8,2">
+                                        <TextBox x:Name="VandalDelayTextBox" BorderThickness="0" Padding="6,3" Background="Transparent" TextChanged="WeaponDelay_TextChanged"/>
+                                    </Border>
+
+                                    <!-- Guardian -->
+                                    <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center" Margin="4,0">
+                                        <TextBlock Text="&#xE7E8;" FontFamily="Segoe MDL2 Assets" VerticalAlignment="Center" Foreground="#495057" Margin="0,0,6,0"/>
+                                        <TextBlock Text="Guardian" FontWeight="Medium" Foreground="#495057"/>
+                                    </StackPanel>
+                                    <Border Grid.Row="1" Grid.Column="1" CornerRadius="3" Background="White" BorderBrush="#CED4DA" BorderThickness="1" Margin="8,2">
+                                        <TextBox x:Name="GuardianDelayTextBox" BorderThickness="0" Padding="6,3" Background="Transparent" TextChanged="WeaponDelay_TextChanged"/>
+                                    </Border>
+
+                                    <!-- Sheriff -->
+                                    <StackPanel Grid.Row="2" Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center" Margin="4,0">
+                                        <TextBlock Text="&#xE7E8;" FontFamily="Segoe MDL2 Assets" VerticalAlignment="Center" Foreground="#495057" Margin="0,0,6,0"/>
+                                        <TextBlock Text="Sheriff" FontWeight="Medium" Foreground="#495057"/>
+                                    </StackPanel>
+                                    <Border Grid.Row="2" Grid.Column="1" CornerRadius="3" Background="White" BorderBrush="#CED4DA" BorderThickness="1" Margin="8,2">
+                                        <TextBox x:Name="SheriffDelayTextBox" BorderThickness="0" Padding="6,3" Background="Transparent" TextChanged="WeaponDelay_TextChanged"/>
+                                    </Border>
+
+                                    <!-- Phantom -->
+                                    <StackPanel Grid.Row="3" Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center" Margin="4,0">
+                                        <TextBlock Text="&#xE7E8;" FontFamily="Segoe MDL2 Assets" VerticalAlignment="Center" Foreground="#495057" Margin="0,0,6,0"/>
+                                        <TextBlock Text="Phantom" FontWeight="Medium" Foreground="#495057"/>
+                                    </StackPanel>
+                                    <Border Grid.Row="3" Grid.Column="1" CornerRadius="3" Background="White" BorderBrush="#CED4DA" BorderThickness="1" Margin="8,2">
+                                        <TextBox x:Name="PhantomDelayTextBox" BorderThickness="0" Padding="6,3" Background="Transparent" TextChanged="WeaponDelay_TextChanged"/>
+                                    </Border>
+
+                                    <!-- Ghost -->
+                                    <StackPanel Grid.Row="4" Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center" Margin="4,0">
+                                        <TextBlock Text="&#xE7E8;" FontFamily="Segoe MDL2 Assets" VerticalAlignment="Center" Foreground="#495057" Margin="0,0,6,0"/>
+                                        <TextBlock Text="Ghost" FontWeight="Medium" Foreground="#495057"/>
+                                    </StackPanel>
+                                    <Border Grid.Row="4" Grid.Column="1" CornerRadius="3" Background="White" BorderBrush="#CED4DA" BorderThickness="1" Margin="8,2">
+                                        <TextBox x:Name="GhostDelayTextBox" BorderThickness="0" Padding="6,3" Background="Transparent" TextChanged="WeaponDelay_TextChanged"/>
+                                    </Border>
+
+                                    <!-- No Delay -->
+                                    <StackPanel Grid.Row="5" Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center" Margin="4,0">
+                                        <TextBlock Text="&#xE7E8;" FontFamily="Segoe MDL2 Assets" VerticalAlignment="Center" Foreground="#495057" Margin="0,0,6,0"/>
+                                        <TextBlock Text="No Delay" FontWeight="Medium" Foreground="#495057"/>
+                                    </StackPanel>
+                                    <Border Grid.Row="5" Grid.Column="1" CornerRadius="3" Background="White" BorderBrush="#CED4DA" BorderThickness="1" Margin="8,2">
+                                        <TextBox x:Name="NoDelayTextBox" BorderThickness="0" Padding="6,3" Background="Transparent" TextChanged="WeaponDelay_TextChanged"/>
+                                    </Border>
+                                </Grid>
+                            </Grid>
+                        </Border>
+
+                        <!-- Sync Button for Macro Settings View -->
+                        <Button x:Name="SyncButtonMacro" Content="Sync All Settings to File" 
+                                Style="{StaticResource SyncButtonStyle}"
+                                Click="SyncAllSettings_Click"/>
+                    </StackPanel>
+                </ScrollViewer>
             </Grid>
 
+            
+            
             <!-- Global Settings View -->
             <Grid x:Name="GlobalSettingsView">
+                
                 <ui:Card Margin="20">
+                    
                     <ui:CardControl>
+                        
                         <ui:CardControl.Header>
                             <TextBlock Text="Global Settings" FontSize="24" FontWeight="Bold" Margin="0,0,0,10"/>
+                            
                         </ui:CardControl.Header>
+                        
                         <ui:CardControl.Content>
+                            
                             <ScrollViewer VerticalScrollBarVisibility="Auto" MaxHeight="500">
                                 <StackPanel Margin="0,0,10,0">
                                     <!-- Toggle Settings Section -->
+                                    
                                     <Border Style="{StaticResource SettingsContainerStyle}">
                                         <StackPanel>
                                             <TextBlock Text="Toggle Settings" FontSize="16" FontWeight="SemiBold" Margin="0,0,0,10"/>
@@ -281,9 +449,9 @@
                                             <StackPanel>
                                                 <TextBlock Text="Shooting Method" FontSize="16" FontWeight="SemiBold" Margin="0,0,0,10"/>
                                                 <RadioButton x:Name="PressButtonOption" Content="Press Button" Style="{StaticResource OptionButtonStyle}" 
-                                                             GroupName="ShootingMethod" IsChecked="True"/>
+                                                             GroupName="ShootingMethod" IsChecked="True" Checked="ShootingMethod_Checked"/>
                                                 <RadioButton x:Name="HoldButtonOption" Content="Hold Button" Style="{StaticResource OptionButtonStyle}" 
-                                                             GroupName="ShootingMethod"/>
+                                                             GroupName="ShootingMethod" Checked="ShootingMethod_Checked"/>
                                             </StackPanel>
                                         </Border>
 
@@ -292,11 +460,11 @@
                                             <StackPanel>
                                                 <TextBlock Text="Color Detection" FontSize="16" FontWeight="SemiBold" Margin="0,0,0,10"/>
                                                 <RadioButton x:Name="RedOption" Content="Red" Style="{StaticResource OptionButtonStyle}" 
-                                                             GroupName="ColorDetection" IsChecked="True"/>
+                                                             GroupName="ColorDetection" IsChecked="True" Checked="ColorDetection_Checked"/>
                                                 <RadioButton x:Name="PurpleOption" Content="Purple" Style="{StaticResource OptionButtonStyle}" 
-                                                             GroupName="ColorDetection"/>
+                                                             GroupName="ColorDetection" Checked="ColorDetection_Checked"/>
                                                 <RadioButton x:Name="YellowOption" Content="Yellow" Style="{StaticResource OptionButtonStyle}" 
-                                                             GroupName="ColorDetection"/>
+                                                             GroupName="ColorDetection" Checked="ColorDetection_Checked"/>
                                             </StackPanel>
                                         </Border>
 
@@ -305,20 +473,34 @@
                                             <StackPanel>
                                                 <TextBlock Text="Shooting Delay" FontSize="16" FontWeight="SemiBold" Margin="0,0,0,10"/>
                                                 <RadioButton x:Name="VandalOption" Content="VANDAL" Style="{StaticResource OptionButtonStyle}" 
-                                                             GroupName="ShootingDelay" IsChecked="True"/>
+                                                             GroupName="ShootingDelay" IsChecked="True" Checked="ShootingDelay_Checked"/>
                                                 <RadioButton x:Name="GuardianOption" Content="GUARDIAN" Style="{StaticResource OptionButtonStyle}" 
-                                                             GroupName="ShootingDelay"/>
+                                                             GroupName="ShootingDelay" Checked="ShootingDelay_Checked"/>
                                                 <RadioButton x:Name="SherifOption" Content="SHERIF" Style="{StaticResource OptionButtonStyle}" 
-                                                             GroupName="ShootingDelay"/>
+                                                             GroupName="ShootingDelay" Checked="ShootingDelay_Checked"/>
                                                 <RadioButton x:Name="PhantomOption" Content="PHANTOM" Style="{StaticResource OptionButtonStyle}" 
-                                                             GroupName="ShootingDelay"/>
+                                                             GroupName="ShootingDelay" Checked="ShootingDelay_Checked"/>
                                                 <RadioButton x:Name="GhostOption" Content="GHOST" Style="{StaticResource OptionButtonStyle}" 
-                                                             GroupName="ShootingDelay"/>
+                                                             GroupName="ShootingDelay" Checked="ShootingDelay_Checked"/>
                                                 <RadioButton x:Name="NoDelayOption" Content="NO DELAY" Style="{StaticResource OptionButtonStyle}" 
-                                                             GroupName="ShootingDelay"/>
+                                                             GroupName="ShootingDelay" Checked="ShootingDelay_Checked"/>
                                             </StackPanel>
                                         </Border>
                                     </Grid>
+
+                                    <!-- Sync Button for Global Settings View -->
+                                    <Button x:Name="SyncButtonGlobal" Content="Sync All Settings to File" 
+                                            Style="{StaticResource SyncButtonStyle}"
+                                            Click="SyncAllSettings_Click"/>
+
+                                    <!-- File Path Information -->
+                                    <Border Style="{StaticResource SettingsContainerStyle}" Margin="0,8,0,0">
+                                        <StackPanel>
+                                            <TextBlock Text="File Settings Information" FontSize="14" FontWeight="SemiBold" Margin="0,0,0,5"/>
+                                            <TextBlock x:Name="FilePathText" Text="Settings file: [loading...]" FontSize="12" TextWrapping="Wrap"/>
+                                            <TextBlock x:Name="LastSyncText" Text="" FontSize="12" Foreground="#27ae60" Margin="0,5,0,0"/>
+                                        </StackPanel>
+                                    </Border>
                                 </StackPanel>
                             </ScrollViewer>
                         </ui:CardControl.Content>
