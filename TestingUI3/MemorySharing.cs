@@ -206,7 +206,7 @@ namespace TestingUI3
         }
 
         // Handle file change event
-        private void OnFileChanged(object sender, FileSystemEventArgs e)
+        public void OnFileChanged(object sender, FileSystemEventArgs e)
         {
             try
             {
@@ -218,7 +218,9 @@ namespace TestingUI3
 
                 // Wait a moment to ensure the file is not locked
                 Thread.Sleep(100);
-
+                // Read specific line (Example: line 20)
+                string updatedValue = ReadSpecificLine(20);
+                Console.WriteLine($"Updated value at line 20: {updatedValue}");
                 // Reload settings
                 LoadSettingsFromFile();
 
@@ -229,6 +231,31 @@ namespace TestingUI3
                 Console.WriteLine($"Error handling file change: {ex.Message}");
             }
         }
+
+        private string ReadSpecificLine(int lineNumber)
+        {
+            lock (fileLock)
+            {
+                try
+                {
+                    using (StreamReader reader = new StreamReader(settingsFilePath))
+                    {
+                        for (int i = 1; i < lineNumber; i++)
+                        {
+                            if (reader.ReadLine() == null)
+                                return ""; // Return empty if line doesn't exist
+                        }
+                        return reader.ReadLine() ?? "";
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error reading specific line: {ex.Message}");
+                    return "";
+                }
+            }
+        }
+
 
         // Update a setting value
         public void UpdateSetting(SettingIndex index, int value)
@@ -272,6 +299,8 @@ namespace TestingUI3
             Dispose(true);
             GC.SuppressFinalize(this);
         }
+
+
 
         protected virtual void Dispose(bool disposing)
         {

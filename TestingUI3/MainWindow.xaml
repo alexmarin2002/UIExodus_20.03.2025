@@ -215,7 +215,7 @@
         </Grid.ColumnDefinitions>
 
         <!-- Left Sidebar with Buttons -->
-        <Border Background="#1E1E2D" CornerRadius="0,20,0,0">
+        <Border Background="#1E1E2D" Opacity="0.75" CornerRadius="0,0,0,0">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
@@ -225,13 +225,13 @@
 
                 <!-- App Title -->
                 <StackPanel Grid.Row="0" Margin="0,20,0,30">
-                    <TextBlock Text="GAME ENHANCER" Foreground="White" FontSize="18" FontWeight="Bold" HorizontalAlignment="Center"/>
-                    <TextBlock Text="CONTROL PANEL" Foreground="#AAAAAA" FontSize="12" HorizontalAlignment="Center" Margin="0,2,0,0"/>
+                    <TextBlock Text="EXODUS SERVICES" Foreground="White" FontSize="18" FontWeight="Bold" HorizontalAlignment="Center"/>
+                    <TextBlock Text="Valorant Triggerbot" Foreground="#AAAAAA" FontSize="12" HorizontalAlignment="Center" Margin="0,2,0,0"/>
                 </StackPanel>
 
                 <!-- Navigation Menu -->
                 <StackPanel Grid.Row="1">
-                    <TextBlock Text="NAVIGATION" Foreground="#6C757D" FontSize="12" Margin="20,0,15,10" />
+                    <TextBlock Text="version 1.2" Foreground="#6C757D" FontSize="12" Margin="20,0,15,10" />
                     <Button Content="General Settings" Click="ShowGlobalSettingsView_Click" Style="{StaticResource SidebarButtonStyle}"/>
                     <Button Content="Weapon Delay" Click="ShowMacroSettingsView_Click" Style="{StaticResource SidebarButtonStyle}"/>
                     <Button Content="Settings" Click="ShowSettingsView_Click" Style="{StaticResource SidebarButtonStyle}"/>
@@ -304,7 +304,6 @@
                                 </StackPanel>
                             </ui:CardControl.Header>
                             <ui:CardControl.Content>
-                                <ScrollViewer VerticalScrollBarVisibility="Auto" MaxHeight="500">
                                     <StackPanel Margin="0,0,10,0">
                                         <!-- Key Detection Section -->
                                         <Border Style="{StaticResource SettingsContainerStyle}" Opacity="0.75">
@@ -457,7 +456,6 @@
                                         </Border>
 
                                     </StackPanel>
-                                </ScrollViewer>
                             </ui:CardControl.Content>
                         </ui:CardControl>
                     </ui:Card>
@@ -742,7 +740,7 @@
                             </ui:CardControl.Header>
                             <ui:CardControl.Content>
                                 <StackPanel x:Name="MainContent">
-                                    <TextBlock x:Name="WelcomeText" Text="Welcome to Game Enhancer" FontWeight="Bold" FontSize="18"/>
+                                    <TextBlock x:Name="WelcomeText" Text="Welcome to the Exodus!" FontWeight="Bold" FontSize="18"/>
                                     <TextBlock Text="Optimize your gaming experience" Opacity="0.7" Margin="0,8,0,18"/>
                                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,12,0,0">
                                         <TextBlock x:Name="CloseRightLabel" Text="Close Right: " FontSize="14" VerticalAlignment="Center"/>
