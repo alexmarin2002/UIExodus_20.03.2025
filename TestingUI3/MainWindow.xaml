@@ -6,18 +6,19 @@
         xmlns:local="clr-namespace:TestingUI3"
         xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="650" Width="950"
+        WindowStartupLocation="CenterScreen">
     <Window.Resources>
         <!-- Custom style for sidebar buttons -->
         <Style x:Key="SidebarButtonStyle" TargetType="Button">
-            <Setter Property="Height" Value="40"/>
-            <Setter Property="Margin" Value="5,8,5,8"/>
+            <Setter Property="Height" Value="46"/>
+            <Setter Property="Margin" Value="8,8,8,8"/>
             <Setter Property="FontSize" Value="14"/>
             <Setter Property="FontWeight" Value="SemiBold"/>
-            <Setter Property="Background" Value="#3498db"/>
+            <Setter Property="Background" Value="#4361EE"/>
             <Setter Property="Foreground" Value="White"/>
             <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="Padding" Value="10,5"/>
+            <Setter Property="Padding" Value="15,5"/>
             <Setter Property="HorizontalContentAlignment" Value="Left"/>
             <Setter Property="Template">
                 <Setter.Value>
@@ -25,18 +26,27 @@
                         <Border Background="{TemplateBinding Background}" 
                                 BorderBrush="{TemplateBinding BorderBrush}" 
                                 BorderThickness="{TemplateBinding BorderThickness}"
-                                CornerRadius="4">
-                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
-                                              VerticalAlignment="Center" 
-                                              Margin="{TemplateBinding Padding}"/>
+                                CornerRadius="8">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="&#xE713;" FontFamily="Segoe MDL2 Assets" 
+                                           Margin="10,0,8,0" VerticalAlignment="Center"/>
+                                <ContentPresenter Grid.Column="1" 
+                                                  HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
+                                                  VerticalAlignment="Center" 
+                                                  Margin="{TemplateBinding Padding}"/>
+                            </Grid>
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Background" Value="#2980b9"/>
+                                <Setter Property="Background" Value="#3A56D4"/>
                                 <Setter Property="Cursor" Value="Hand"/>
                             </Trigger>
                             <Trigger Property="IsPressed" Value="True">
-                                <Setter Property="Background" Value="#1f618d"/>
+                                <Setter Property="Background" Value="#2E46B9"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -50,14 +60,18 @@
                 <Setter.Value>
                     <ControlTemplate TargetType="ToggleButton">
                         <Grid>
-                            <Border x:Name="BackgroundElement" Background="#CCCCCC" Width="50" Height="24" CornerRadius="12">
+                            <Border x:Name="BackgroundElement" Background="#E0E0E0" Width="50" Height="24" CornerRadius="12">
                                 <Border x:Name="ThumbElement" Width="20" Height="20" Background="White" CornerRadius="10" 
-                                        HorizontalAlignment="Left" Margin="2,0,0,0" VerticalAlignment="Center"/>
+                                        HorizontalAlignment="Left" Margin="2,0,0,0" VerticalAlignment="Center">
+                                    <Border.Effect>
+                                        <DropShadowEffect ShadowDepth="1" BlurRadius="2" Opacity="0.3" Direction="270"/>
+                                    </Border.Effect>
+                                </Border>
                             </Border>
                         </Grid>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsChecked" Value="True">
-                                <Setter TargetName="BackgroundElement" Property="Background" Value="#3498db"/>
+                                <Setter TargetName="BackgroundElement" Property="Background" Value="#4361EE"/>
                                 <Setter TargetName="ThumbElement" Property="Margin" Value="28,0,0,0"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
@@ -68,31 +82,89 @@
 
         <!-- Custom style for option buttons -->
         <Style x:Key="OptionButtonStyle" TargetType="RadioButton">
-            <Setter Property="Margin" Value="0,3,0,3"/>
-            <Setter Property="FontSize" Value="12"/>
-            <Setter Property="Padding" Value="5,2"/>
+            <Setter Property="Margin" Value="0,5,0,5"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Padding" Value="8,4"/>
+            <Setter Property="Foreground" Value="#303030"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="RadioButton">
+                        <Grid>
+                            <Border x:Name="Border" 
+                                    Background="Transparent" 
+                                    BorderBrush="#DDDDDD" 
+                                    BorderThickness="1" 
+                                    CornerRadius="6"
+                                    Padding="6,4">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Ellipse x:Name="RadioMark" 
+                                             Width="16" 
+                                             Height="16" 
+                                             Stroke="#BBBBBB" 
+                                             StrokeThickness="1.5" 
+                                             HorizontalAlignment="Center" 
+                                             VerticalAlignment="Center"/>
+                                    <Ellipse x:Name="CheckMark" 
+                                             Width="8" 
+                                             Height="8" 
+                                             Fill="#4361EE" 
+                                             Visibility="Collapsed" 
+                                             HorizontalAlignment="Center" 
+                                             VerticalAlignment="Center"/>
+                                    <ContentPresenter Grid.Column="1" 
+                                                    Margin="10,0,0,0" 
+                                                    VerticalAlignment="Center" 
+                                                    HorizontalAlignment="Left"/>
+                                </Grid>
+                            </Border>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsChecked" Value="true">
+                                <Setter TargetName="CheckMark" Property="Visibility" Value="Visible"/>
+                                <Setter TargetName="RadioMark" Property="Stroke" Value="#4361EE"/>
+                                <Setter TargetName="Border" Property="BorderBrush" Value="#4361EE"/>
+                                <Setter TargetName="Border" Property="Background" Value="#F0F4FF"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Setter TargetName="Border" Property="Background" Value="#F7F9FF"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
         </Style>
 
         <!-- Custom style for settings containers -->
         <Style x:Key="SettingsContainerStyle" TargetType="Border">
-            <Setter Property="Background" Value="#F5F5F5"/>
-            <Setter Property="BorderBrush" Value="#DDDDDD"/>
+            <Setter Property="Background" Value="#FFFFFF" />
+            <Setter Property="Background" Value="#FFFFFF" />
+            <Setter Property="BorderBrush" Value="#EEEEEE"/>
             <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="CornerRadius" Value="8"/>
-            <Setter Property="Padding" Value="15,10"/>
+            <Setter Property="CornerRadius" Value="10"/>
+            <Setter Property="Padding" Value="18,14"/>
             <Setter Property="Margin" Value="0,8"/>
+            <Setter Property="Opacity" Value="0.85"/>
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect ShadowDepth="1" BlurRadius="10" Opacity="0.1" Direction="270"/>
+                </Setter.Value>
+            </Setter>
         </Style>
 
         <!-- Sync button style -->
         <Style x:Key="SyncButtonStyle" TargetType="Button">
-            <Setter Property="Height" Value="35"/>
-            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Height" Value="42"/>
+            <Setter Property="FontSize" Value="14"/>
             <Setter Property="FontWeight" Value="SemiBold"/>
-            <Setter Property="Background" Value="#2ecc71"/>
+            <Setter Property="Background" Value="#10B981"/>
             <Setter Property="Foreground" Value="White"/>
             <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="Padding" Value="15,5"/>
-            <Setter Property="Margin" Value="0,15,0,5"/>
+            <Setter Property="Padding" Value="20,5"/>
+            <Setter Property="Margin" Value="0,20,0,5"/>
             <Setter Property="HorizontalAlignment" Value="Center"/>
             <Setter Property="Template">
                 <Setter.Value>
@@ -100,18 +172,26 @@
                         <Border Background="{TemplateBinding Background}" 
                                 BorderBrush="{TemplateBinding BorderBrush}" 
                                 BorderThickness="{TemplateBinding BorderThickness}"
-                                CornerRadius="4">
-                            <ContentPresenter HorizontalAlignment="Center" 
+                                CornerRadius="8">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="&#xE895;" FontFamily="Segoe MDL2 Assets" Margin="0,0,8,0" VerticalAlignment="Center"/>
+                                <ContentPresenter Grid.Column="1" 
+                                              HorizontalAlignment="Center" 
                                               VerticalAlignment="Center" 
                                               Margin="{TemplateBinding Padding}"/>
+                            </Grid>
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Background" Value="#27ae60"/>
+                                <Setter Property="Background" Value="#0EA371"/>
                                 <Setter Property="Cursor" Value="Hand"/>
                             </Trigger>
                             <Trigger Property="IsPressed" Value="True">
-                                <Setter Property="Background" Value="#1e8449"/>
+                                <Setter Property="Background" Value="#0C8D61"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -121,414 +201,569 @@
     </Window.Resources>
 
     <Grid>
+        <!-- Main Background Image using relative path -->
+        <Grid.Background>
+            <ImageBrush ImageSource="pack://application:,,,/main-bg.jpg" 
+                        Stretch="UniformToFill" Opacity="0.85"/>
+        </Grid.Background>
+
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="180"/>
+            <ColumnDefinition Width="220"/>
             <!-- Sidebar - increased width to accommodate larger buttons -->
             <ColumnDefinition Width="*"/>
             <!-- Main Content -->
         </Grid.ColumnDefinitions>
 
         <!-- Left Sidebar with Buttons -->
-        <StackPanel Grid.Column="0" Background="#222233" Margin="0">
-            <TextBlock Text="NAVIGATION" Foreground="#AAAAAA" FontSize="12" Margin="15,20,15,10" />
-            <Button Content="General Settings" Click="ShowGlobalSettingsView_Click" Style="{StaticResource SidebarButtonStyle}"/>
-            <Button Content="Weapon Delay" Click="ShowMacroSettingsView_Click" Style="{StaticResource SidebarButtonStyle}"/>
-            <Button Content="Settings" Click="ShowSettingsView_Click" Style="{StaticResource SidebarButtonStyle}"/>
-            <Button Content="User Info / Help" Click="ShowUserInfoView_Click" Style="{StaticResource SidebarButtonStyle}"/>
-        </StackPanel>
-
-        <!-- Main Content Area -->
-        <Grid Grid.Column="1">
-            <!-- This will have multiple content panels that we'll switch between -->
-            <Grid x:Name="UserInfoView" Visibility="Collapsed">
-                <!-- User Info content would go here -->
-                <TextBlock Text="User Info View" FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-            </Grid>
-
-            <Grid x:Name="ContactUsView" Visibility="Collapsed">
-                <!-- Contact Us content would go here -->
-                <TextBlock Text="Contact Us View" FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-            </Grid>
-
-            <Grid x:Name="SettingsView" Visibility="Collapsed">
-                <ui:Card Margin="20">
-                    <ui:CardControl>
-                        <ui:CardControl.Header>
-                            <TextBlock Text="Settings" FontSize="24" FontWeight="Bold" Margin="0,0,0,10"/>
-                        </ui:CardControl.Header>
-                        <ui:CardControl.Content>
-                            <ScrollViewer VerticalScrollBarVisibility="Auto" MaxHeight="500">
-                                <StackPanel Margin="0,0,10,0">
-                                    <!-- Key Detection Section -->
-                                    <Border Style="{StaticResource SettingsContainerStyle}">
-                                        <Grid>
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="*"/>
-                                                <ColumnDefinition Width="Auto"/>
-                                                <ColumnDefinition Width="Auto"/>
-                                            </Grid.ColumnDefinitions>
-                                            <TextBlock Text="On/Off Key" FontSize="16" FontWeight="SemiBold" VerticalAlignment="Center"/>
-                                            <TextBlock x:Name="SelectedKeyText" Text="None" Grid.Column="1" Margin="0,0,10,0" 
-                                           VerticalAlignment="Center" FontSize="14"/>
-                                            <Button x:Name="KeyDetectionButton" Content="Press a Key" Grid.Column="2" Click="StartKeyOrMouseDetection"
-                                        Padding="12,5" Background="#3498db" Foreground="White" BorderThickness="0">
-                                                <Button.Resources>
-                                                    <Style TargetType="Border">
-                                                        <Setter Property="CornerRadius" Value="4"/>
-                                                    </Style>
-                                                </Button.Resources>
-                                            </Button>
-                                        </Grid>
-                                    </Border>
-
-                                    <Border Style="{StaticResource SettingsContainerStyle}">
-                                        <Grid>
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="*"/>
-                                                <ColumnDefinition Width="Auto"/>
-                                                <ColumnDefinition Width="Auto"/>
-                                            </Grid.ColumnDefinitions>
-                                            <TextBlock Text="Weapon Delay Key" FontSize="16" FontWeight="SemiBold" VerticalAlignment="Center"/>
-                                            <TextBlock x:Name="SelectedKeyText2" Text="None" Grid.Column="1" Margin="0,0,10,0" 
-                                           VerticalAlignment="Center" FontSize="14"/>
-                                            <Button x:Name="KeyDetectionButton2" Content="Press a Key" Grid.Column="2" Click="StartKeyOrMouseDetection"
-                                        Padding="12,5" Background="#3498db" Foreground="White" BorderThickness="0">
-                                                <Button.Resources>
-                                                    <Style TargetType="Border">
-                                                        <Setter Property="CornerRadius" Value="4"/>
-                                                    </Style>
-                                                </Button.Resources>
-                                            </Button>
-                                        </Grid>
-                                    </Border>
-                                    <!-- Pixel Range Slider Setting -->
-                                    <Border Style="{StaticResource SettingsContainerStyle}">
-                                        <StackPanel>
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="*"/>
-                                                    <ColumnDefinition Width="Auto"/>
-                                                </Grid.ColumnDefinitions>
-                                                <TextBlock Text="Pixel Range" FontSize="16" FontWeight="SemiBold" VerticalAlignment="Center"/>
-                                                <TextBlock x:Name="PixelRangeValue" Text="5" Grid.Column="1" VerticalAlignment="Center" 
-                                               FontSize="14" FontWeight="SemiBold"/>
-                                            </Grid>
-                                            <Slider x:Name="PixelRangeSlider" Minimum="1" Maximum="10" Value="5" 
-                                        TickFrequency="1" IsSnapToTickEnabled="True" Margin="0,10,0,0"
-                                        ValueChanged="PixelRangeSlider_ValueChanged"/>
-                                        </StackPanel>
-                                    </Border>
-                                    <!-- Audio Range Slider Setting -->
-                                    <Border Style="{StaticResource SettingsContainerStyle}">
-                                        <StackPanel>
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="*"/>
-                                                    <ColumnDefinition Width="Auto"/>
-                                                </Grid.ColumnDefinitions>
-                                                <TextBlock Text="Volume Range (Voices)" FontSize="16" FontWeight="SemiBold" VerticalAlignment="Center"/>
-                                                <TextBlock x:Name="AudioRangeValue" Text="5" Grid.Column="1" VerticalAlignment="Center" 
-                                               FontSize="14" FontWeight="SemiBold"/>
-                                            </Grid>
-                                            <Slider x:Name="AudioRangeSlider" Minimum="0" Maximum="10" Value="5" 
-                                        TickFrequency="1" IsSnapToTickEnabled="True" Margin="0,10,0,0"
-                                        ValueChanged="AudioRangeSlider_ValueChanged"/>
-                                        </StackPanel>
-                                    </Border>
-                                    <!-- Resolution Display -->
-                                    <Border Style="{StaticResource SettingsContainerStyle}">
-                                        <Grid>
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="*"/>
-                                                <ColumnDefinition Width="Auto"/>
-                                            </Grid.ColumnDefinitions>
-                                            <TextBlock Text="RES. DETECTED" FontSize="16" FontWeight="SemiBold" VerticalAlignment="Center"/>
-                                            <TextBlock x:Name="ResolutionTextBlock" Grid.Column="1" VerticalAlignment="Center" 
-                  FontSize="14" FontWeight="SemiBold"/>
-                                        </Grid>
-                                    </Border>
-
-                                    <!-- Sync Button for Settings View -->
-                                    <Button x:Name="SyncButtonSettings" Content="Sync All Settings to File" 
-                                            Style="{StaticResource SyncButtonStyle}"
-                                            Click="SyncAllSettings_Click"/>
-                                </StackPanel>
-                            </ScrollViewer>
-                        </ui:CardControl.Content>
-                    </ui:CardControl>
-                </ui:Card>
-
-                <!-- Key Detection Popup -->
-                <Popup x:Name="KeyDetectionPopup" 
-       StaysOpen="False" 
-       AllowsTransparency="True"
-       Placement="Center"
-       HorizontalOffset="0"  
-       VerticalOffset="0">
-                    <Border Background="#222233" BorderBrush="#3498db" BorderThickness="1" 
-            CornerRadius="5" Width="200" Height="100">
-                        <Grid>
-                            <TextBlock Text="Press a key" FontSize="18" Foreground="White" 
-                       HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        </Grid>
-                    </Border>
-                </Popup>
-            </Grid>
-
-            <Grid x:Name="MacroSettingsView" Visibility="Collapsed">
+        <Border Background="#1E1E2D" CornerRadius="0,20,0,0">
+            <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
-                <!-- Header -->
-                <Border Grid.Row="0" Background="#343A40" Padding="10">
-                    <TextBlock Text="Weapons Settings" FontSize="20" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center"/>
+                <!-- App Title -->
+                <StackPanel Grid.Row="0" Margin="0,20,0,30">
+                    <TextBlock Text="GAME ENHANCER" Foreground="White" FontSize="18" FontWeight="Bold" HorizontalAlignment="Center"/>
+                    <TextBlock Text="CONTROL PANEL" Foreground="#AAAAAA" FontSize="12" HorizontalAlignment="Center" Margin="0,2,0,0"/>
+                </StackPanel>
+
+                <!-- Navigation Menu -->
+                <StackPanel Grid.Row="1">
+                    <TextBlock Text="NAVIGATION" Foreground="#6C757D" FontSize="12" Margin="20,0,15,10" />
+                    <Button Content="General Settings" Click="ShowGlobalSettingsView_Click" Style="{StaticResource SidebarButtonStyle}"/>
+                    <Button Content="Weapon Delay" Click="ShowMacroSettingsView_Click" Style="{StaticResource SidebarButtonStyle}"/>
+                    <Button Content="Settings" Click="ShowSettingsView_Click" Style="{StaticResource SidebarButtonStyle}"/>
+                    <Button Content="User Info / Help" Click="ShowUserInfoView_Click" Style="{StaticResource SidebarButtonStyle}"/>
+                </StackPanel>
+
+                <!-- Status Indicator -->
+                <Border Grid.Row="2" Background="#15151F" CornerRadius="8" Margin="15,0,15,20" Padding="12,10">
+                    <StackPanel>
+                        <TextBlock Text="APPLICATION STATUS" Foreground="#6C757D" FontSize="11" HorizontalAlignment="Left"/>
+                        <Grid Margin="0,8,0,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Ellipse Width="8" Height="8" Fill="#10B981" VerticalAlignment="Center" Margin="2,0,0,0"/>
+                            <TextBlock Grid.Column="1" Text="Running" Foreground="White" FontSize="12" Margin="10,0,0,0"/>
+                        </Grid>
+                    </StackPanel>
                 </Border>
+            </Grid>
+        </Border>
 
-                <!-- Content -->
-                <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
-                    <StackPanel Margin="15">
-                        <!-- Weapon Delay Section -->
-                        <Border Background="#F8F9FA" CornerRadius="6" Padding="12" Margin="0,0,0,10" BorderBrush="#DEE2E6" BorderThickness="1">
+        <!-- Main Content Area with Background -->
+        <Border Grid.Column="1">
+            <Border.Background>
+                <ImageBrush ImageSource="pack://application:,,,/content-bg.png" 
+                            Stretch="UniformToFill" Opacity="0.35"/>
+            </Border.Background>
+
+            <Grid>
+                <!-- This will have multiple content panels that we'll switch between -->
+                <Grid x:Name="UserInfoView" Visibility="Collapsed">
+                    <!-- User Info content would go here -->
+                    <ui:Card Margin="30" Background="White" Opacity="0.85">
+                        <ui:CardControl>
+                            <ui:CardControl.Header>
+                                <TextBlock Text="User Information" FontSize="24" FontWeight="Bold" Margin="0,0,0,10"/>
+                            </ui:CardControl.Header>
+                            <ui:CardControl.Content>
+                                <TextBlock Text="User Info and Help content would be displayed here." 
+                                           FontSize="16" Foreground="#555555" TextWrapping="Wrap"/>
+                            </ui:CardControl.Content>
+                        </ui:CardControl>
+                    </ui:Card>
+                </Grid>
+
+                <Grid x:Name="ContactUsView" Visibility="Collapsed">
+                    <!-- Contact Us content would go here -->
+                    <ui:Card Margin="30" Background="White" Opacity="0.85">
+                        <ui:CardControl>
+                            <ui:CardControl.Header>
+                                <TextBlock Text="Contact Us" FontSize="24" FontWeight="Bold" Margin="0,0,0,10"/>
+                            </ui:CardControl.Header>
+                            <ui:CardControl.Content>
+                                <TextBlock Text="Contact information would be displayed here." 
+                                           FontSize="16" Foreground="#555555" TextWrapping="Wrap"/>
+                            </ui:CardControl.Content>
+                        </ui:CardControl>
+                    </ui:Card>
+                </Grid>
+
+                <Grid x:Name="SettingsView" Visibility="Collapsed">
+                    <ui:Card Margin="30" Background="White">
+                        <ui:CardControl>
+                            <ui:CardControl.Header>
+                                <StackPanel Margin="0,0,0,0">
+                                    <TextBlock Text="Settings" FontSize="24" FontWeight="Bold" Margin="0,0,0,0"/>
+                                    <TextBlock Text="Configure your application preferences" FontSize="12" Foreground="#6C757D" Margin="0,0,0,2"/>
+                                </StackPanel>
+                            </ui:CardControl.Header>
+                            <ui:CardControl.Content>
+                                <ScrollViewer VerticalScrollBarVisibility="Auto" MaxHeight="500">
+                                    <StackPanel Margin="0,0,10,0">
+                                        <!-- Key Detection Section -->
+                                        <Border Style="{StaticResource SettingsContainerStyle}" Opacity="0.75">
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                </Grid.ColumnDefinitions>
+                                                <StackPanel>
+                                                    <TextBlock Text="On/Off Key" FontSize="16" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                                                    <TextBlock Text="Set your preferred activation key" FontSize="12" Foreground="#6C757D" Margin="0,2,0,0"/>
+                                                </StackPanel>
+                                                <TextBlock x:Name="SelectedKeyText" Text="None" Grid.Column="1" Margin="0,0,15,0" 
+                                               VerticalAlignment="Center" FontWeight="Medium" FontSize="14"/>
+                                                <Button x:Name="KeyDetectionButton" Content="Press a Key" Grid.Column="2" Click="StartKeyOrMouseDetection"
+                                            Padding="10,6" Background="#4361EE" Foreground="White" BorderThickness="0">
+                                                    <Button.Resources>
+                                                        <Style TargetType="Border">
+                                                            <Setter Property="CornerRadius" Value="6"/>
+                                                        </Style>
+                                                    </Button.Resources>
+                                                </Button>
+                                            </Grid>
+                                        </Border>
+
+                                        <Border Style="{StaticResource SettingsContainerStyle}" Opacity="0.75">
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                </Grid.ColumnDefinitions>
+                                                <StackPanel>
+                                                    <TextBlock Text="Weapon Delay Key" FontSize="16" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                                                    <TextBlock Text="Set your weapon delay activation key" FontSize="12" Foreground="#6C757D" Margin="0,2,0,0"/>
+                                                </StackPanel>
+                                                <TextBlock x:Name="SelectedKeyText2" Text="None" Grid.Column="1" Margin="0,0,15,0" 
+                                               VerticalAlignment="Center" FontWeight="Medium" FontSize="14"/>
+                                                <Button x:Name="KeyDetectionButton2" Content="Press a Key" Grid.Column="2" Click="StartKeyOrMouseDetection"
+                                            Padding="10,6" Background="#4361EE" Foreground="White" BorderThickness="0">
+                                                    <Button.Resources>
+                                                        <Style TargetType="Border">
+                                                            <Setter Property="CornerRadius" Value="6"/>
+                                                        </Style>
+                                                    </Button.Resources>
+                                                </Button>
+                                            </Grid>
+                                        </Border>
+                                        <!-- Pixel Range Slider Setting -->
+                                        <Border Style="{StaticResource SettingsContainerStyle}" Opacity="0.75">
+                                            <StackPanel>
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="*"/>
+                                                        <ColumnDefinition Width="Auto"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <StackPanel>
+                                                        <TextBlock Text="Pixel Range" FontSize="16" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                                                        <TextBlock Text="Adjust detection pixel sensitivity" FontSize="12" Foreground="#6C757D" Margin="0,4,0,0"/>
+                                                    </StackPanel>
+                                                    <Border Grid.Column="1" Background="#EBF3FE" CornerRadius="6" Padding="10,4" 
+                                                     VerticalAlignment="Center">
+                                                        <TextBlock x:Name="PixelRangeValue" Text="5" FontWeight="SemiBold" Foreground="#4361EE"/>
+                                                    </Border>
+                                                </Grid>
+                                                <Slider x:Name="PixelRangeSlider" Minimum="1" Maximum="10" Value="5" 
+                                            TickFrequency="1" IsSnapToTickEnabled="True" Margin="0,15,0,5"
+                                            ValueChanged="PixelRangeSlider_ValueChanged">
+                                                    <Slider.Resources>
+                                                        <Style TargetType="Thumb">
+                                                            <Setter Property="Template">
+                                                                <Setter.Value>
+                                                                    <ControlTemplate TargetType="Thumb">
+                                                                        <Ellipse Width="16" Height="16" Fill="#4361EE"/>
+                                                                    </ControlTemplate>
+                                                                </Setter.Value>
+                                                            </Setter>
+                                                        </Style>
+                                                    </Slider.Resources>
+                                                </Slider>
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="*"/>
+                                                        <ColumnDefinition Width="*"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <TextBlock Text="Low" FontSize="11" Foreground="#6C757D" HorizontalAlignment="Left"/>
+                                                    <TextBlock Text="High" FontSize="11" Foreground="#6C757D" HorizontalAlignment="Right" Grid.Column="1"/>
+                                                </Grid>
+                                            </StackPanel>
+                                        </Border>
+                                        <!-- Audio Range Slider Setting -->
+                                        <Border Style="{StaticResource SettingsContainerStyle}" Opacity="0.75">
+                                            <StackPanel>
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="*"/>
+                                                        <ColumnDefinition Width="Auto"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <StackPanel>
+                                                        <TextBlock Text="Volume Range (Voices)" FontSize="16" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                                                        <TextBlock Text="Adjust audio detection sensitivity" FontSize="12" Foreground="#6C757D" Margin="0,4,0,0"/>
+                                                    </StackPanel>
+                                                    <Border Grid.Column="1" Background="#EBF3FE" CornerRadius="6" Padding="10,4" 
+                                                     VerticalAlignment="Center">
+                                                        <TextBlock x:Name="AudioRangeValue" Text="5" FontWeight="SemiBold" Foreground="#4361EE"/>
+                                                    </Border>
+                                                </Grid>
+                                                <Slider x:Name="AudioRangeSlider" Minimum="0" Maximum="10" Value="5" 
+                                            TickFrequency="1" IsSnapToTickEnabled="True" Margin="0,15,0,5"
+                                            ValueChanged="AudioRangeSlider_ValueChanged">
+                                                    <Slider.Resources>
+                                                        <Style TargetType="Thumb">
+                                                            <Setter Property="Template">
+                                                                <Setter.Value>
+                                                                    <ControlTemplate TargetType="Thumb">
+                                                                        <Ellipse Width="16" Height="16" Fill="#4361EE"/>
+                                                                    </ControlTemplate>
+                                                                </Setter.Value>
+                                                            </Setter>
+                                                        </Style>
+                                                    </Slider.Resources>
+                                                </Slider>
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="*"/>
+                                                        <ColumnDefinition Width="*"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <TextBlock Text="Low" FontSize="11" Foreground="#6C757D" HorizontalAlignment="Left"/>
+                                                    <TextBlock Text="High" FontSize="11" Foreground="#6C757D" HorizontalAlignment="Right" Grid.Column="1"/>
+                                                </Grid>
+                                            </StackPanel>
+                                        </Border>
+                                        <!-- Resolution Display -->
+                                        <Border Style="{StaticResource SettingsContainerStyle}" Opacity="0.75">
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                </Grid.ColumnDefinitions>
+                                                <StackPanel>
+                                                    <TextBlock Text="RESOLUTION DETECTED" FontSize="16" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                                                    <TextBlock Text="Your screen's current resolution" FontSize="12" Foreground="#6C757D" Margin="0,4,0,0"/>
+                                                </StackPanel>
+                                                <Border Grid.Column="1" Background="#F3F4F6" CornerRadius="6" Padding="12,6" 
+                                                 VerticalAlignment="Center">
+                                                    <TextBlock x:Name="ResolutionTextBlock" Text="1920 x 1080" FontWeight="SemiBold" Foreground="#4B5563"/>
+                                                </Border>
+                                            </Grid>
+                                        </Border>
+
+                                    </StackPanel>
+                                </ScrollViewer>
+                            </ui:CardControl.Content>
+                        </ui:CardControl>
+                    </ui:Card>
+
+                    <!-- Key Detection Popup -->
+                    <Popup x:Name="KeyDetectionPopup" 
+               StaysOpen="False" 
+               AllowsTransparency="True"
+               Placement="Center"
+               HorizontalOffset="0"  
+               VerticalOffset="0">
+                        <Border Background="#1E1E2D" BorderBrush="#4361EE" BorderThickness="2" 
+                    CornerRadius="10" Width="280" Height="140">
+                            <Border.Effect>
+                                <DropShadowEffect BlurRadius="15" Direction="270" ShadowDepth="5" Opacity="0.3"/>
+                            </Border.Effect>
                             <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                </Grid.RowDefinitions>
-
-                                <!-- Section Header -->
-                                <Border Grid.Row="0" BorderBrush="#DEE2E6" BorderThickness="0,0,0,1" Padding="0,0,0,6" Margin="0,0,0,8">
-                                    <TextBlock Text="Weapon Delay (ms)" FontSize="16" FontWeight="SemiBold" Foreground="#212529"/>
-                                </Border>
-
-                                <!-- Weapon Inputs - More Compact Grid -->
-                                <Grid Grid.Row="1">
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="32"/>
-                                        <RowDefinition Height="32"/>
-                                        <RowDefinition Height="32"/>
-                                        <RowDefinition Height="32"/>
-                                        <RowDefinition Height="32"/>
-                                        <RowDefinition Height="32"/>
-                                    </Grid.RowDefinitions>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="*"/>
-                                    </Grid.ColumnDefinitions>
-
-                                    <!-- Vandal -->
-                                    <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center" Margin="4,0">
-                                        <TextBlock Text="&#xE7E8;" FontFamily="Segoe MDL2 Assets" VerticalAlignment="Center" Foreground="#495057" Margin="0,0,6,0"/>
-                                        <TextBlock Text="Vandal" FontWeight="Medium" Foreground="#495057"/>
-                                    </StackPanel>
-                                    <Border Grid.Row="0" Grid.Column="1" CornerRadius="3" Background="White" BorderBrush="#CED4DA" BorderThickness="1" Margin="8,2">
-                                        <TextBox x:Name="VandalDelayTextBox" BorderThickness="0" Padding="6,3" Background="Transparent" TextChanged="WeaponDelay_TextChanged"/>
-                                    </Border>
-
-                                    <!-- Guardian -->
-                                    <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center" Margin="4,0">
-                                        <TextBlock Text="&#xE7E8;" FontFamily="Segoe MDL2 Assets" VerticalAlignment="Center" Foreground="#495057" Margin="0,0,6,0"/>
-                                        <TextBlock Text="Guardian" FontWeight="Medium" Foreground="#495057"/>
-                                    </StackPanel>
-                                    <Border Grid.Row="1" Grid.Column="1" CornerRadius="3" Background="White" BorderBrush="#CED4DA" BorderThickness="1" Margin="8,2">
-                                        <TextBox x:Name="GuardianDelayTextBox" BorderThickness="0" Padding="6,3" Background="Transparent" TextChanged="WeaponDelay_TextChanged"/>
-                                    </Border>
-
-                                    <!-- Sheriff -->
-                                    <StackPanel Grid.Row="2" Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center" Margin="4,0">
-                                        <TextBlock Text="&#xE7E8;" FontFamily="Segoe MDL2 Assets" VerticalAlignment="Center" Foreground="#495057" Margin="0,0,6,0"/>
-                                        <TextBlock Text="Sheriff" FontWeight="Medium" Foreground="#495057"/>
-                                    </StackPanel>
-                                    <Border Grid.Row="2" Grid.Column="1" CornerRadius="3" Background="White" BorderBrush="#CED4DA" BorderThickness="1" Margin="8,2">
-                                        <TextBox x:Name="SheriffDelayTextBox" BorderThickness="0" Padding="6,3" Background="Transparent" TextChanged="WeaponDelay_TextChanged"/>
-                                    </Border>
-
-                                    <!-- Phantom -->
-                                    <StackPanel Grid.Row="3" Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center" Margin="4,0">
-                                        <TextBlock Text="&#xE7E8;" FontFamily="Segoe MDL2 Assets" VerticalAlignment="Center" Foreground="#495057" Margin="0,0,6,0"/>
-                                        <TextBlock Text="Phantom" FontWeight="Medium" Foreground="#495057"/>
-                                    </StackPanel>
-                                    <Border Grid.Row="3" Grid.Column="1" CornerRadius="3" Background="White" BorderBrush="#CED4DA" BorderThickness="1" Margin="8,2">
-                                        <TextBox x:Name="PhantomDelayTextBox" BorderThickness="0" Padding="6,3" Background="Transparent" TextChanged="WeaponDelay_TextChanged"/>
-                                    </Border>
-
-                                    <!-- Ghost -->
-                                    <StackPanel Grid.Row="4" Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center" Margin="4,0">
-                                        <TextBlock Text="&#xE7E8;" FontFamily="Segoe MDL2 Assets" VerticalAlignment="Center" Foreground="#495057" Margin="0,0,6,0"/>
-                                        <TextBlock Text="Ghost" FontWeight="Medium" Foreground="#495057"/>
-                                    </StackPanel>
-                                    <Border Grid.Row="4" Grid.Column="1" CornerRadius="3" Background="White" BorderBrush="#CED4DA" BorderThickness="1" Margin="8,2">
-                                        <TextBox x:Name="GhostDelayTextBox" BorderThickness="0" Padding="6,3" Background="Transparent" TextChanged="WeaponDelay_TextChanged"/>
-                                    </Border>
-
-                                    <!-- No Delay -->
-                                    <StackPanel Grid.Row="5" Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center" Margin="4,0">
-                                        <TextBlock Text="&#xE7E8;" FontFamily="Segoe MDL2 Assets" VerticalAlignment="Center" Foreground="#495057" Margin="0,0,6,0"/>
-                                        <TextBlock Text="No Delay" FontWeight="Medium" Foreground="#495057"/>
-                                    </StackPanel>
-                                    <Border Grid.Row="5" Grid.Column="1" CornerRadius="3" Background="White" BorderBrush="#CED4DA" BorderThickness="1" Margin="8,2">
-                                        <TextBox x:Name="NoDelayTextBox" BorderThickness="0" Padding="6,3" Background="Transparent" TextChanged="WeaponDelay_TextChanged"/>
-                                    </Border>
-                                </Grid>
+                                <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                                    <TextBlock Text="&#xE8FA;" FontFamily="Segoe MDL2 Assets" FontSize="24" Foreground="#4361EE" 
+                                   HorizontalAlignment="Center" Margin="0,0,0,10"/>
+                                    <TextBlock Text="Press a key" FontSize="20" Foreground="White" 
+                               HorizontalAlignment="Center" Margin="0,0,0,5"/>
+                                    <TextBlock Text="The detected key will be set as your shortcut" FontSize="12" Foreground="#BBBBBB" 
+                               HorizontalAlignment="Center" TextWrapping="Wrap" TextAlignment="Center"/>
+                                </StackPanel>
                             </Grid>
                         </Border>
+                    </Popup>
+                </Grid>
 
-                        <!-- Sync Button for Macro Settings View -->
-                        <Button x:Name="SyncButtonMacro" Content="Sync All Settings to File" 
-                                Style="{StaticResource SyncButtonStyle}"
-                                Click="SyncAllSettings_Click"/>
-                    </StackPanel>
-                </ScrollViewer>
-            </Grid>
+                <Grid x:Name="MacroSettingsView" Visibility="Collapsed">
+                    <ui:Card Margin="30" Background="White" Opacity="0.85">
+                        <ui:CardControl>
+                            <ui:CardControl.Header>
+                                <StackPanel>
+                                    <TextBlock Text="Weapon Settings" FontSize="24" FontWeight="Bold" Margin="0,0,0,5"/>
+                                    <TextBlock Text="Configure weapon-specific delay settings" FontSize="13" Foreground="#6C757D" Margin="0,0,0,15"/>
+                                </StackPanel>
+                            </ui:CardControl.Header>
+                            <ui:CardControl.Content>
+                                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                                    <StackPanel>
+                                        <!-- Weapon Delay Section -->
+                                        <Border Style="{StaticResource SettingsContainerStyle}" Background="#FFFFFF">
+                                            <Grid>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                </Grid.RowDefinitions>
 
-            
-            
-            <!-- Global Settings View -->
-            <Grid x:Name="GlobalSettingsView">
-                
-                <ui:Card Margin="20">
-                    
-                    <ui:CardControl>
-                        
-                        <ui:CardControl.Header>
-                            <TextBlock Text="Global Settings" FontSize="24" FontWeight="Bold" Margin="0,0,0,10"/>
-                            
-                        </ui:CardControl.Header>
-                        
-                        <ui:CardControl.Content>
-                            
-                            <ScrollViewer VerticalScrollBarVisibility="Auto" MaxHeight="500">
-                                <StackPanel Margin="0,0,10,0">
-                                    <!-- Toggle Settings Section -->
-                                    
-                                    <Border Style="{StaticResource SettingsContainerStyle}">
-                                        <StackPanel>
-                                            <TextBlock Text="Toggle Settings" FontSize="16" FontWeight="SemiBold" Margin="0,0,0,10"/>
+                                                <!-- Section Header -->
+                                                <Border Grid.Row="0" BorderBrush="#EEEEEE" BorderThickness="0,0,0,1" Padding="0,0,0,10" Margin="0,0,0,15">
+                                                    <StackPanel>
+                                                        <TextBlock Text="Weapon Delay (ms)" FontSize="18" FontWeight="SemiBold" Foreground="#303030"/>
+                                                        <TextBlock Text="Configure the delay time for each weapon type" Foreground="#6C757D" FontSize="13" Margin="0,4,0,0"/>
+                                                    </StackPanel>
+                                                </Border>
 
-                                            <!-- Status Setting -->
-                                            <Grid Margin="0,5">
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="*"/>
-                                                    <ColumnDefinition Width="Auto"/>
-                                                </Grid.ColumnDefinitions>
-                                                <TextBlock Text="Status" FontSize="14" VerticalAlignment="Center"/>
-                                                <StackPanel Grid.Column="1" Orientation="Horizontal">
-                                                    <TextBlock x:Name="StatusText" Text="False" Margin="0,0,10,0" VerticalAlignment="Center"/>
-                                                    <ToggleButton x:Name="StatusToggle" Style="{StaticResource CustomToggleButtonStyle}" 
+                                                <!-- Weapon Inputs - More Compact Grid -->
+                                                <Grid Grid.Row="1">
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition Height="44"/>
+                                                        <RowDefinition Height="44"/>
+                                                        <RowDefinition Height="44"/>
+                                                        <RowDefinition Height="44"/>
+                                                        <RowDefinition Height="44"/>
+                                                        <RowDefinition Height="44"/>
+                                                    </Grid.RowDefinitions>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="Auto"/>
+                                                        <ColumnDefinition Width="*"/>
+                                                    </Grid.ColumnDefinitions>
+
+                                                    <!-- Vandal -->
+                                                    <Border Grid.Row="0" Grid.Column="0" Background="#F3F4F6" CornerRadius="8" Padding="12,6" Margin="0,0,15,0">
+                                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                                            <TextBlock Text="&#xE7E8;" FontFamily="Segoe MDL2 Assets" VerticalAlignment="Center" Foreground="#4B5563" Margin="0,0,8,0"/>
+                                                            <TextBlock Text="Vandal" FontWeight="SemiBold" Foreground="#4B5563"/>
+                                                        </StackPanel>
+                                                    </Border>
+                                                    <Border Grid.Row="0" Grid.Column="1" CornerRadius="8" Background="White" BorderBrush="#DFE3E8" BorderThickness="1" Margin="0,4">
+                                                        <TextBox x:Name="VandalDelayTextBox" BorderThickness="0" Padding="12,8" 
+                                                             Background="Transparent" TextChanged="WeaponDelay_TextChanged" 
+                                                             VerticalContentAlignment="Center" FontSize="14"/>
+                                                    </Border>
+
+                                                    <!-- Guardian -->
+                                                    <Border Grid.Row="1" Grid.Column="0" Background="#F3F4F6" CornerRadius="8" Padding="12,6" Margin="0,0,15,0">
+                                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                                            <TextBlock Text="&#xE7E8;" FontFamily="Segoe MDL2 Assets" VerticalAlignment="Center" Foreground="#4B5563" Margin="0,0,8,0"/>
+                                                            <TextBlock Text="Guardian" FontWeight="SemiBold" Foreground="#4B5563"/>
+                                                        </StackPanel>
+                                                    </Border>
+                                                    <Border Grid.Row="1" Grid.Column="1" CornerRadius="8" Background="White" BorderBrush="#DFE3E8" BorderThickness="1" Margin="0,4">
+                                                        <TextBox x:Name="GuardianDelayTextBox" BorderThickness="0" Padding="12,8" 
+                                                             Background="Transparent" TextChanged="WeaponDelay_TextChanged" 
+                                                             VerticalContentAlignment="Center" FontSize="14"/>
+                                                    </Border>
+
+                                                    <!-- Sheriff -->
+                                                    <Border Grid.Row="2" Grid.Column="0" Background="#F3F4F6" CornerRadius="8" Padding="12,6" Margin="0,0,15,0">
+                                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                                            <TextBlock Text="&#xE7E8;" FontFamily="Segoe MDL2 Assets" VerticalAlignment="Center" Foreground="#4B5563" Margin="0,0,8,0"/>
+                                                            <TextBlock Text="Sheriff" FontWeight="SemiBold" Foreground="#4B5563"/>
+                                                        </StackPanel>
+                                                    </Border>
+                                                    <Border Grid.Row="2" Grid.Column="1" CornerRadius="8" Background="White" BorderBrush="#DFE3E8" BorderThickness="1" Margin="0,4">
+                                                        <TextBox x:Name="SheriffDelayTextBox" BorderThickness="0" Padding="12,8" 
+                                                             Background="Transparent" TextChanged="WeaponDelay_TextChanged" 
+                                                             VerticalContentAlignment="Center" FontSize="14"/>
+                                                    </Border>
+
+                                                    <!-- Phantom -->
+                                                    <Border Grid.Row="3" Grid.Column="0" Background="#F3F4F6" CornerRadius="8" Padding="12,6" Margin="0,0,15,0">
+                                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                                            <TextBlock Text="&#xE7E8;" FontFamily="Segoe MDL2 Assets" VerticalAlignment="Center" Foreground="#4B5563" Margin="0,0,8,0"/>
+                                                            <TextBlock Text="Phantom" FontWeight="SemiBold" Foreground="#4B5563"/>
+                                                        </StackPanel>
+                                                    </Border>
+                                                    <Border Grid.Row="3" Grid.Column="1" CornerRadius="8" Background="White" BorderBrush="#DFE3E8" BorderThickness="1" Margin="0,4">
+                                                        <TextBox x:Name="PhantomDelayTextBox" BorderThickness="0" Padding="12,8" 
+                                                             Background="Transparent" TextChanged="WeaponDelay_TextChanged" 
+                                                             VerticalContentAlignment="Center" FontSize="14"/>
+                                                    </Border>
+
+                                                    <!-- Ghost -->
+                                                    <Border Grid.Row="4" Grid.Column="0" Background="#F3F4F6" CornerRadius="8" Padding="12,6" Margin="0,0,15,0">
+                                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                                            <TextBlock Text="&#xE7E8;" FontFamily="Segoe MDL2 Assets" VerticalAlignment="Center" Foreground="#4B5563" Margin="0,0,8,0"/>
+                                                            <TextBlock Text="Ghost" FontWeight="SemiBold" Foreground="#4B5563"/>
+                                                        </StackPanel>
+                                                    </Border>
+                                                    <Border Grid.Row="4" Grid.Column="1" CornerRadius="8" Background="White" BorderBrush="#DFE3E8" BorderThickness="1" Margin="0,4">
+                                                        <TextBox x:Name="GhostDelayTextBox" BorderThickness="0" Padding="12,8" 
+                                                             Background="Transparent" TextChanged="WeaponDelay_TextChanged" 
+                                                             VerticalContentAlignment="Center" FontSize="14"/>
+                                                    </Border>
+
+                                                    <!-- No Delay -->
+                                                    <Border Grid.Row="5" Grid.Column="0" Background="#F3F4F6" CornerRadius="8" Padding="12,6" Margin="0,0,15,0">
+                                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                                            <TextBlock Text="&#xE7E8;" FontFamily="Segoe MDL2 Assets" VerticalAlignment="Center" Foreground="#4B5563" Margin="0,0,8,0"/>
+                                                            <TextBlock Text="No Delay" FontWeight="SemiBold" Foreground="#4B5563"/>
+                                                        </StackPanel>
+                                                    </Border>
+                                                    <Border Grid.Row="5" Grid.Column="1" CornerRadius="8" Background="White" BorderBrush="#DFE3E8" BorderThickness="1" Margin="0,4">
+                                                        <TextBox x:Name="NoDelayTextBox" BorderThickness="0" Padding="12,8" 
+                                                             Background="Transparent" TextChanged="WeaponDelay_TextChanged" 
+                                                             VerticalContentAlignment="Center" FontSize="14"/>
+                                                    </Border>
+                                                </Grid>
+                                            </Grid>
+                                        </Border>
+
+                                    </StackPanel>
+                                </ScrollViewer>
+                            </ui:CardControl.Content>
+                        </ui:CardControl>
+                    </ui:Card>
+                </Grid>
+
+                <!-- Global Settings View -->
+                <Grid x:Name="GlobalSettingsView">
+                    <ui:Card Margin="30" Background="White" Opacity="0.85">
+                        <ui:CardControl>
+                            <ui:CardControl.Header>
+                                <StackPanel>
+                                    <TextBlock Text="Global Settings" FontSize="24" FontWeight="Bold" Margin="0,0,0,5"/>
+                                    <TextBlock Text="Configure global application settings" FontSize="13" Foreground="#6C757D" Margin="0,0,0,15"/>
+                                </StackPanel>
+                            </ui:CardControl.Header>
+                            <ui:CardControl.Content>
+                                <ScrollViewer VerticalScrollBarVisibility="Auto" MaxHeight="500">
+                                    <StackPanel Margin="0,0,10,0">
+                                        <!-- Toggle Settings Section -->
+                                        <Border Style="{StaticResource SettingsContainerStyle}">
+                                            <StackPanel>
+                                                <TextBlock Text="Toggle Settings" FontSize="16" FontWeight="SemiBold" Margin="0,0,0,15"/>
+
+                                                <!-- Status Setting -->
+                                                <Grid Margin="0,8,0,12">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="*"/>
+                                                        <ColumnDefinition Width="Auto"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <StackPanel>
+                                                        <TextBlock Text="Status" FontSize="14" FontWeight="Medium" VerticalAlignment="Center"/>
+                                                        <TextBlock Text="Enable or disable the application functionality" FontSize="12" Foreground="#6C757D" Margin="0,3,0,0"/>
+                                                    </StackPanel>
+                                                    <StackPanel Grid.Column="1" Orientation="Horizontal">
+                                                        <TextBlock x:Name="StatusText" Text="False" Margin="0,0,10,0" VerticalAlignment="Center" FontWeight="Medium"/>
+                                                        <ToggleButton x:Name="StatusToggle" Style="{StaticResource CustomToggleButtonStyle}" 
                                                                   Checked="StatusToggle_Checked" Unchecked="StatusToggle_Unchecked"/>
-                                                </StackPanel>
-                                            </Grid>
+                                                    </StackPanel>
+                                                </Grid>
 
-                                            <!-- Shot While Moving Setting -->
-                                            <Grid Margin="0,5">
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="*"/>
-                                                    <ColumnDefinition Width="Auto"/>
-                                                </Grid.ColumnDefinitions>
-                                                <TextBlock Text="Shot While Moving" FontSize="14" VerticalAlignment="Center"/>
-                                                <StackPanel Grid.Column="1" Orientation="Horizontal">
-                                                    <TextBlock x:Name="ShotWhileMovingText" Text="False" Margin="0,0,10,0" VerticalAlignment="Center"/>
-                                                    <ToggleButton x:Name="ShotWhileMovingToggle" Style="{StaticResource CustomToggleButtonStyle}" 
+                                                <!-- Shot While Moving Setting -->
+                                                <Grid Margin="0,8">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="*"/>
+                                                        <ColumnDefinition Width="Auto"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <StackPanel>
+                                                        <TextBlock Text="Shot While Moving" FontSize="14" FontWeight="Medium" VerticalAlignment="Center"/>
+                                                        <TextBlock Text="Allow shots to be fired while in motion" FontSize="12" Foreground="#6C757D" Margin="0,3,0,0"/>
+                                                    </StackPanel>
+                                                    <StackPanel Grid.Column="1" Orientation="Horizontal">
+                                                        <TextBlock x:Name="ShotWhileMovingText" Text="False" Margin="0,0,10,0" VerticalAlignment="Center" FontWeight="Medium"/>
+                                                        <ToggleButton x:Name="ShotWhileMovingToggle" Style="{StaticResource CustomToggleButtonStyle}" 
                                                                   Checked="ShotWhileMovingToggle_Checked" Unchecked="ShotWhileMovingToggle_Unchecked"/>
-                                                </StackPanel>
-                                            </Grid>
-                                        </StackPanel>
-                                    </Border>
+                                                    </StackPanel>
+                                                </Grid>
+                                            </StackPanel>
+                                        </Border>
 
-                                    <!-- Method and Color Settings Section -->
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*"/>
-                                            <ColumnDefinition Width="*"/>
-                                            <ColumnDefinition Width="*"/>
-                                        </Grid.ColumnDefinitions>
+                                        <!-- Method and Color Settings Section -->
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
 
-                                        <!-- Shooting Method -->
-                                        <Border Grid.Column="0" Style="{StaticResource SettingsContainerStyle}" Margin="0,8,4,8">
-                                            <StackPanel>
-                                                <TextBlock Text="Shooting Method" FontSize="16" FontWeight="SemiBold" Margin="0,0,0,10"/>
-                                                <RadioButton x:Name="PressButtonOption" Content="Press Button" Style="{StaticResource OptionButtonStyle}" 
+                                            <!-- Shooting Method -->
+                                            <Border Grid.Column="0" Style="{StaticResource SettingsContainerStyle}" Margin="0,8,5,8">
+                                                <StackPanel>
+                                                    <TextBlock Text="Shooting Method" FontSize="16" FontWeight="SemiBold" Margin="0,0,0,12"/>
+                                                    <RadioButton x:Name="PressButtonOption" Content="Press Button" Style="{StaticResource OptionButtonStyle}" 
                                                              GroupName="ShootingMethod" IsChecked="True" Checked="ShootingMethod_Checked"/>
-                                                <RadioButton x:Name="HoldButtonOption" Content="Hold Button" Style="{StaticResource OptionButtonStyle}" 
+                                                    <RadioButton x:Name="HoldButtonOption" Content="Hold Button" Style="{StaticResource OptionButtonStyle}" 
                                                              GroupName="ShootingMethod" Checked="ShootingMethod_Checked"/>
-                                            </StackPanel>
-                                        </Border>
+                                                </StackPanel>
+                                            </Border>
 
-                                        <!-- Color Detection -->
-                                        <Border Grid.Column="1" Style="{StaticResource SettingsContainerStyle}" Margin="4,8,4,8">
-                                            <StackPanel>
-                                                <TextBlock Text="Color Detection" FontSize="16" FontWeight="SemiBold" Margin="0,0,0,10"/>
-                                                <RadioButton x:Name="RedOption" Content="Red" Style="{StaticResource OptionButtonStyle}" 
+                                            <!-- Color Detection -->
+                                            <Border Grid.Column="1" Style="{StaticResource SettingsContainerStyle}" Margin="5,8,5,8">
+                                                <StackPanel>
+                                                    <TextBlock Text="Color Detection" FontSize="16" FontWeight="SemiBold" Margin="0,0,0,12"/>
+                                                    <RadioButton x:Name="RedOption" Content="Red" Style="{StaticResource OptionButtonStyle}" 
                                                              GroupName="ColorDetection" IsChecked="True" Checked="ColorDetection_Checked"/>
-                                                <RadioButton x:Name="PurpleOption" Content="Purple" Style="{StaticResource OptionButtonStyle}" 
+                                                    <RadioButton x:Name="PurpleOption" Content="Purple" Style="{StaticResource OptionButtonStyle}" 
                                                              GroupName="ColorDetection" Checked="ColorDetection_Checked"/>
-                                                <RadioButton x:Name="YellowOption" Content="Yellow" Style="{StaticResource OptionButtonStyle}" 
+                                                    <RadioButton x:Name="YellowOption" Content="Yellow" Style="{StaticResource OptionButtonStyle}" 
                                                              GroupName="ColorDetection" Checked="ColorDetection_Checked"/>
-                                            </StackPanel>
-                                        </Border>
+                                                </StackPanel>
+                                            </Border>
 
-                                        <!-- Shooting Delay -->
-                                        <Border Grid.Column="2" Style="{StaticResource SettingsContainerStyle}" Margin="4,8,0,8">
-                                            <StackPanel>
-                                                <TextBlock Text="Shooting Delay" FontSize="16" FontWeight="SemiBold" Margin="0,0,0,10"/>
-                                                <RadioButton x:Name="VandalOption" Content="VANDAL" Style="{StaticResource OptionButtonStyle}" 
+                                            <!-- Shooting Delay -->
+                                            <Border Grid.Column="2" Style="{StaticResource SettingsContainerStyle}" Margin="5,8,0,8">
+                                                <StackPanel>
+                                                    <TextBlock Text="Shooting Delay" FontSize="16" FontWeight="SemiBold" Margin="0,0,0,12"/>
+                                                    <RadioButton x:Name="VandalOption" Content="VANDAL" Style="{StaticResource OptionButtonStyle}" 
                                                              GroupName="ShootingDelay" IsChecked="True" Checked="ShootingDelay_Checked"/>
-                                                <RadioButton x:Name="GuardianOption" Content="GUARDIAN" Style="{StaticResource OptionButtonStyle}" 
+                                                    <RadioButton x:Name="GuardianOption" Content="GUARDIAN" Style="{StaticResource OptionButtonStyle}" 
                                                              GroupName="ShootingDelay" Checked="ShootingDelay_Checked"/>
-                                                <RadioButton x:Name="SherifOption" Content="SHERIF" Style="{StaticResource OptionButtonStyle}" 
+                                                    <RadioButton x:Name="SherifOption" Content="SHERIF" Style="{StaticResource OptionButtonStyle}" 
                                                              GroupName="ShootingDelay" Checked="ShootingDelay_Checked"/>
-                                                <RadioButton x:Name="PhantomOption" Content="PHANTOM" Style="{StaticResource OptionButtonStyle}" 
+                                                    <RadioButton x:Name="PhantomOption" Content="PHANTOM" Style="{StaticResource OptionButtonStyle}" 
                                                              GroupName="ShootingDelay" Checked="ShootingDelay_Checked"/>
-                                                <RadioButton x:Name="GhostOption" Content="GHOST" Style="{StaticResource OptionButtonStyle}" 
+                                                    <RadioButton x:Name="GhostOption" Content="GHOST" Style="{StaticResource OptionButtonStyle}" 
                                                              GroupName="ShootingDelay" Checked="ShootingDelay_Checked"/>
-                                                <RadioButton x:Name="NoDelayOption" Content="NO DELAY" Style="{StaticResource OptionButtonStyle}" 
+                                                    <RadioButton x:Name="NoDelayOption" Content="NO DELAY" Style="{StaticResource OptionButtonStyle}" 
                                                              GroupName="ShootingDelay" Checked="ShootingDelay_Checked"/>
-                                            </StackPanel>
-                                        </Border>
-                                    </Grid>
+                                                </StackPanel>
+                                            </Border>
+                                        </Grid>
 
-                                    <!-- Sync Button for Global Settings View -->
-                                    <Button x:Name="SyncButtonGlobal" Content="Sync All Settings to File" 
-                                            Style="{StaticResource SyncButtonStyle}"
-                                            Click="SyncAllSettings_Click"/>
 
-                                    <!-- File Path Information -->
-                                    <Border Style="{StaticResource SettingsContainerStyle}" Margin="0,8,0,0">
-                                        <StackPanel>
-                                            <TextBlock Text="File Settings Information" FontSize="14" FontWeight="SemiBold" Margin="0,0,0,5"/>
-                                            <TextBlock x:Name="FilePathText" Text="Settings file: [loading...]" FontSize="12" TextWrapping="Wrap"/>
-                                            <TextBlock x:Name="LastSyncText" Text="" FontSize="12" Foreground="#27ae60" Margin="0,5,0,0"/>
-                                        </StackPanel>
-                                    </Border>
+                                    </StackPanel>
+                                </ScrollViewer>
+                            </ui:CardControl.Content>
+                        </ui:CardControl>
+                    </ui:Card>
+                </Grid>
+
+                <!-- Default welcome view -->
+                <Grid x:Name="DefaultView" Visibility="Collapsed">
+                    <ui:Card Margin="30" Background="White" Opacity="0.85">
+                        <ui:CardControl>
+                            <ui:CardControl.Header>
+                                <TextBlock Text="Welcome" FontSize="24" FontWeight="Bold" Margin="0,0,0,10"/>
+                            </ui:CardControl.Header>
+                            <ui:CardControl.Content>
+                                <StackPanel x:Name="MainContent">
+                                    <TextBlock x:Name="WelcomeText" Text="Welcome to Game Enhancer" FontWeight="Bold" FontSize="18"/>
+                                    <TextBlock Text="Optimize your gaming experience" Opacity="0.7" Margin="0,8,0,18"/>
+                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,12,0,0">
+                                        <TextBlock x:Name="CloseRightLabel" Text="Close Right: " FontSize="14" VerticalAlignment="Center"/>
+                                        <TextBlock x:Name="CloseRightText" Text="True" FontSize="14" FontWeight="Bold" VerticalAlignment="Center" Margin="4,0,0,0"/>
+                                        <TextBlock x:Name="OpenRightLabel" Text="Open Right: " FontSize="14" VerticalAlignment="Center" Visibility="Collapsed"/>
+                                        <TextBlock x:Name="OpenRightText" Text="True" FontSize="14" FontWeight="Bold" VerticalAlignment="Center" Margin="4,0,0,0" Visibility="Collapsed"/>
+                                    </StackPanel>
+                                    <ToggleButton x:Name="CloseRightToggle" Content="Toggle Close Right" Margin="0,12,0,0" Padding="12,8"/>
+                                    <Button x:Name="MainButton" Content="Click me!" Margin="0,12,0,0" Padding="12,8" Background="#4361EE" Foreground="White">
+                                        <Button.Resources>
+                                            <Style TargetType="Border">
+                                                <Setter Property="CornerRadius" Value="8"/>
+                                            </Style>
+                                        </Button.Resources>
+                                    </Button>
                                 </StackPanel>
-                            </ScrollViewer>
-                        </ui:CardControl.Content>
-                    </ui:CardControl>
-                </ui:Card>
+                            </ui:CardControl.Content>
+                        </ui:CardControl>
+                    </ui:Card>
+                </Grid>
             </Grid>
-
-            <!-- Default welcome view -->
-            <Grid x:Name="DefaultView" Visibility="Collapsed">
-                <ui:Card Margin="12">
-                    <ui:CardControl>
-                        <ui:CardControl.Content>
-                            <StackPanel x:Name="MainContent">
-                                <TextBlock x:Name="WelcomeText" Text="Welcome to WPF UI" FontWeight="Bold" FontSize="16"/>
-                                <TextBlock Text="Modern UI for WPF applications" Opacity="0.7" Margin="0,4,0,12"/>
-                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,8,0,0">
-                                    <TextBlock x:Name="CloseRightLabel" Text="Close Right: " FontSize="14" VerticalAlignment="Center"/>
-                                    <TextBlock x:Name="CloseRightText" Text="True" FontSize="14" FontWeight="Bold" VerticalAlignment="Center" Margin="4,0,0,0"/>
-                                    <TextBlock x:Name="OpenRightLabel" Text="Open Right: " FontSize="14" VerticalAlignment="Center" Visibility="Collapsed"/>
-                                    <TextBlock x:Name="OpenRightText" Text="True" FontSize="14" FontWeight="Bold" VerticalAlignment="Center" Margin="4,0,0,0" Visibility="Collapsed"/>
-                                </StackPanel>
-                                <ToggleButton x:Name="CloseRightToggle" Content="Toggle Close Right" Click="CloseRightToggle_Click"/>
-                                <Button x:Name="MainButton" Content="Click me!"/>
-                            </StackPanel>
-                        </ui:CardControl.Content>
-                    </ui:CardControl>
-                </ui:Card>
-            </Grid>
-        </Grid>
+        </Border>
     </Grid>
 </Window>

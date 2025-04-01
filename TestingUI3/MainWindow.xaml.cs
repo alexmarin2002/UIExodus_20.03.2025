@@ -38,7 +38,7 @@ namespace TestingUI3
                 Console.WriteLine($"Settings file located at: {fileSharing.GetSettingsFilePath()}");
                 //LAUNCH SETTINGS-------------------------------------------------------------------------------------------------
                 if (StatusText != null)
-                    StatusText.Text = "False";
+                    StatusText.Text = "OFF";
 
                 if (fileSharing != null)
                     fileSharing.UpdateSetting(FileSharing.SettingIndex.Status, settingValues["StatusFalse"]);
@@ -149,7 +149,7 @@ namespace TestingUI3
                 {
                     StatusToggle.IsChecked = status;
                     if (StatusText != null)
-                        StatusText.Text = status ? "True" : "False";
+                        StatusText.Text = status ? "ON" : "OFF";
                 }
 
                 // ShotWhileMoving toggle
@@ -158,7 +158,7 @@ namespace TestingUI3
                 {
                     ShotWhileMovingToggle.IsChecked = shotWhileMoving;
                     if (ShotWhileMovingText != null)
-                        ShotWhileMovingText.Text = shotWhileMoving ? "True" : "False";
+                        ShotWhileMovingText.Text = shotWhileMoving ? "ON" : "OFF";
                 }
 
                 // Pixel Range slider
@@ -337,7 +337,7 @@ namespace TestingUI3
             try
             {
                 if (StatusText != null)
-                    StatusText.Text = "True";
+                    StatusText.Text = "ON";
 
                 if (fileSharing != null)
                     fileSharing.UpdateSetting(FileSharing.SettingIndex.Status, settingValues["StatusTrue"]);
@@ -355,7 +355,7 @@ namespace TestingUI3
             try
             {
                 if (StatusText != null)
-                    StatusText.Text = "False";
+                    StatusText.Text = "OFF";
 
                 if (fileSharing != null)
                     fileSharing.UpdateSetting(FileSharing.SettingIndex.Status, settingValues["StatusFalse"]);
@@ -373,7 +373,7 @@ namespace TestingUI3
             try
             {
                 if (ShotWhileMovingText != null)
-                    ShotWhileMovingText.Text = "True";
+                    ShotWhileMovingText.Text = "ON";
 
                 if (fileSharing != null)
                     fileSharing.UpdateSetting(FileSharing.SettingIndex.ShotWhileMoving, settingValues["ShotWhileMovingTrue"]);
@@ -391,7 +391,7 @@ namespace TestingUI3
             try
             {
                 if (ShotWhileMovingText != null)
-                    ShotWhileMovingText.Text = "False";
+                    ShotWhileMovingText.Text = "OFF";
 
                 if (fileSharing != null)
                     fileSharing.UpdateSetting(FileSharing.SettingIndex.ShotWhileMoving, settingValues["ShotWhileMovingFalse"]);
@@ -795,251 +795,7 @@ namespace TestingUI3
                 Console.WriteLine($"Error in ColorDetection_Checked: {ex.Message}");
             }
         }
-        private void SyncAllSettings_Click(object sender, RoutedEventArgs e)
-        {
-            if (fileSharing == null)
-            {
-                MessageBox.Show("File sharing is not initialized.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
-
-            try
-            {
-                // Synchronize all current UI settings to the file
-
-                // Status Setting
-                if (StatusToggle != null && StatusToggle.IsChecked.HasValue)
-                {
-                    int statusValue = StatusToggle.IsChecked.Value ? settingValues["StatusTrue"] : settingValues["StatusFalse"];
-                    fileSharing.UpdateSetting(FileSharing.SettingIndex.Status, statusValue);
-                }
-
-                // Shot While Moving Setting
-                if (ShotWhileMovingToggle != null && ShotWhileMovingToggle.IsChecked.HasValue)
-                {
-                    int shotWhileMovingValue = ShotWhileMovingToggle.IsChecked.Value ?
-                        settingValues["ShotWhileMovingTrue"] :
-                        settingValues["ShotWhileMovingFalse"];
-                    fileSharing.UpdateSetting(FileSharing.SettingIndex.ShotWhileMoving, shotWhileMovingValue);
-                }
-
-                // Shooting Method
-                if (PressButtonOption != null && PressButtonOption.IsChecked == true)
-                {
-                    fileSharing.UpdateSetting(
-                        FileSharing.SettingIndex.ShootingMethod,
-                        settingValues["PressButton"]
-                    );
-                }
-                else if (HoldButtonOption != null && HoldButtonOption.IsChecked == true)
-                {
-                    fileSharing.UpdateSetting(
-                        FileSharing.SettingIndex.ShootingMethod,
-                        settingValues["HoldButton"]
-                    );
-                }
-
-                // Color Detection
-                if (RedOption != null && RedOption.IsChecked == true)
-                {
-                    fileSharing.UpdateSetting(
-                        FileSharing.SettingIndex.ColorDetection,
-                        settingValues["Red"]
-                    );
-                }
-                else if (PurpleOption != null && PurpleOption.IsChecked == true)
-                {
-                    fileSharing.UpdateSetting(
-                        FileSharing.SettingIndex.ColorDetection,
-                        settingValues["Purple"]
-                    );
-                }
-                else if (YellowOption != null && YellowOption.IsChecked == true)
-                {
-                    fileSharing.UpdateSetting(
-                        FileSharing.SettingIndex.ColorDetection,
-                        settingValues["Yellow"]
-                    );
-                }
-
-                // Shooting Delay
-                if (VandalOption != null && VandalOption.IsChecked == true)
-                {
-                    fileSharing.UpdateSetting(
-                        FileSharing.SettingIndex.ShootingDelay,
-                        settingValues["VANDAL"]
-                    );
-                }
-                else if (GuardianOption != null && GuardianOption.IsChecked == true)
-                {
-                    fileSharing.UpdateSetting(
-                        FileSharing.SettingIndex.ShootingDelay,
-                        settingValues["GUARDIAN"]
-                    );
-                }
-                else if (SherifOption != null && SherifOption.IsChecked == true)
-                {
-                    fileSharing.UpdateSetting(
-                        FileSharing.SettingIndex.ShootingDelay,
-                        settingValues["SHERIF"]
-                    );
-                }
-                else if (PhantomOption != null && PhantomOption.IsChecked == true)
-                {
-                    fileSharing.UpdateSetting(
-                        FileSharing.SettingIndex.ShootingDelay,
-                        settingValues["PHANTOM"]
-                    );
-                }
-                else if (GhostOption != null && GhostOption.IsChecked == true)
-                {
-                    fileSharing.UpdateSetting(
-                        FileSharing.SettingIndex.ShootingDelay,
-                        settingValues["GHOST"]
-                    );
-                }
-                else if (NoDelayOption != null && NoDelayOption.IsChecked == true)
-                {
-                    fileSharing.UpdateSetting(
-                        FileSharing.SettingIndex.ShootingDelay,
-                        settingValues["NO DELAY"]
-                    );
-                }
-
-                // Pixel Range
-                if (PixelRangeSlider != null)
-                {
-                    int pixelRange = (int)PixelRangeSlider.Value;
-                    string key = $"PixelRange{pixelRange}";
-                    if (settingValues.ContainsKey(key))
-                    {
-                        fileSharing.UpdateSetting(
-                            FileSharing.SettingIndex.PixelRange,
-                            settingValues[key]
-                        );
-                    }
-                }
-                if (AudioRangeSlider != null)
-                {
-                    int audioRange = (int)AudioRangeSlider.Value;
-                    string key = $"AudioRange{audioRange}";
-                    if (settingValues.ContainsKey(key))
-                    {
-                        fileSharing.UpdateSetting(
-                            FileSharing.SettingIndex.AudioRange,
-                            settingValues[key]
-                        );
-                    }
-                }
-
-                // Weapon Delays
-                if (VandalDelayTextBox != null &&
-                    int.TryParse(VandalDelayTextBox.Text, out int vandalDelay))
-                {
-                    fileSharing.UpdateSetting(
-                        FileSharing.SettingIndex.WeaponDelayVandal,
-                        Math.Clamp(vandalDelay, 0, 30)
-                    );
-                }
-
-                if (GuardianDelayTextBox != null &&
-                    int.TryParse(GuardianDelayTextBox.Text, out int guardianDelay))
-                {
-                    fileSharing.UpdateSetting(
-                        FileSharing.SettingIndex.WeaponDelayGuardian,
-                        Math.Clamp(guardianDelay, 0, 30)
-                    );
-                }
-
-                if (SheriffDelayTextBox != null &&
-                    int.TryParse(SheriffDelayTextBox.Text, out int sheriffDelay))
-                {
-                    fileSharing.UpdateSetting(
-                        FileSharing.SettingIndex.WeaponDelaySheriff,
-                        Math.Clamp(sheriffDelay, 0, 30)
-                    );
-                }
-
-                if (PhantomDelayTextBox != null &&
-                    int.TryParse(PhantomDelayTextBox.Text, out int phantomDelay))
-                {
-                    fileSharing.UpdateSetting(
-                        FileSharing.SettingIndex.WeaponDelayPhantom,
-                        Math.Clamp(phantomDelay, 0, 30)
-                    );
-                }
-
-                if (GhostDelayTextBox != null &&
-                    int.TryParse(GhostDelayTextBox.Text, out int ghostDelay))
-                {
-                    fileSharing.UpdateSetting(
-                        FileSharing.SettingIndex.WeaponDelayGhost,
-                        Math.Clamp(ghostDelay, 0, 30)
-                    );
-                }
-
-                if (NoDelayTextBox != null &&
-                    int.TryParse(NoDelayTextBox.Text, out int noDelay))
-                {
-                    fileSharing.UpdateSetting(
-                        FileSharing.SettingIndex.WeaponDelayNone,
-                        Math.Clamp(noDelay, 0, 30)
-                    );
-                }
-
-                // Key Selections
-                if (SelectedKeyText != null && !string.IsNullOrEmpty(SelectedKeyText.Text) &&
-                    SelectedKeyText.Text != "None")
-                {
-                    int selectedKeyValue = Math.Abs(SelectedKeyText.Text.GetHashCode() % 31);
-                    fileSharing.UpdateSetting(FileSharing.SettingIndex.SelectedKey, selectedKeyValue);
-                }
-
-                if (SelectedKeyText2 != null && !string.IsNullOrEmpty(SelectedKeyText2.Text) &&
-                    SelectedKeyText2.Text != "None")
-                {
-                    int weaponDelayKeyValue = Math.Abs(SelectedKeyText2.Text.GetHashCode() % 31);
-                    fileSharing.UpdateSetting(FileSharing.SettingIndex.WeaponDelayKey, weaponDelayKeyValue);
-                }
-
-                // Update last sync time
-                if (LastSyncText != null)
-                {
-                    LastSyncText.Text = $"Last synchronized: {DateTime.Now:yyyy-MM-dd HH:mm:ss}";
-                }
-
-                // Update file path information
-                if (FilePathText != null)
-                {
-                    try
-                    {
-                        FilePathText.Text = $"Settings file: {fileSharing.GetSettingsFilePath()}";
-                    }
-                    catch (Exception pathEx)
-                    {
-                        FilePathText.Text = $"Could not retrieve file path: {pathEx.Message}";
-                    }
-                }
-
-                // Show success message
-                MessageBox.Show(
-                    "All settings have been synchronized to the file.",
-                    "Sync Successful",
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Information
-                );
-            }
-            catch (Exception ex)
-            {
-                // Show error message if sync fails
-                MessageBox.Show(
-                    $"Failed to synchronize settings: {ex.Message}",
-                    "Sync Error",
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Error
-                );
-            }
-        }
+        
         // Method to handle shooting delay selection changes with file sharing
         private void ShootingDelay_Checked(object sender, RoutedEventArgs e)
         {

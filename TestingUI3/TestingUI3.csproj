@@ -7,9 +7,19 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="content-bg.png" />
+    <None Remove="main-bg.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="WPF-UI" Version="4.0.2" />
     <PackageReference Include="WPF-UI-Enhanced" Version="10.0.0" />
     <PackageReference Include="WPF.UI" Version="3.4.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="content-bg.png" />
+    <Resource Include="main-bg.jpg" />
   </ItemGroup>
 
 </Project>
