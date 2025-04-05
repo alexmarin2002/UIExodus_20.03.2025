@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Threading;
+using System.Timers;
+using Timer = System.Timers.Timer;
 
 namespace TestingUI3
 {
@@ -36,6 +38,13 @@ namespace TestingUI3
         private FileSystemWatcher watcher;
         private DateTime lastWriteTime = DateTime.MinValue;
 
+        // Line 20 monitoring
+        private string lastLine20Value = "";
+        private Timer monitoringTimer;
+        private bool isMonitoringActive = false;
+        public event EventHandler<string> Line20Changed;
+
+
         public FileSharing(string filePath = null)
         {
             // Use default file path if none provided
@@ -63,6 +72,9 @@ namespace TestingUI3
 
             // Set up file watcher to detect changes from C++ application
             SetupFileWatcher();
+
+            // Start monitoring line 20 for changes
+            SetupLine20Monitoring();
         }
 
         // Initialize default settings values
@@ -81,7 +93,7 @@ namespace TestingUI3
             settingValues[SettingIndex.ShootingMethod] = 12;
 
             // Default to Red
-            settingValues[SettingIndex.ColorDetection] = 7;
+            settingValues[SettingIndex.ColorDetection] = 14;
 
             // Default to Vandal
             settingValues[SettingIndex.ShootingDelay] = 5;
@@ -219,9 +231,6 @@ namespace TestingUI3
                 // Wait a moment to ensure the file is not locked
                 Thread.Sleep(100);
                 // Read specific line (Example: line 20)
-                string updatedValue = ReadSpecificLine(20);
-                Console.WriteLine($"Updated value at line 20: {updatedValue}");
-                // Reload settings
                 LoadSettingsFromFile();
 
                 Console.WriteLine("Settings file was modified externally. Reloaded settings.");
@@ -256,6 +265,61 @@ namespace TestingUI3
             }
         }
 
+        // Setup monitoring for line 20
+        private void SetupLine20Monitoring()
+        {
+            try
+            {
+                // Initialize the last known value
+                lastLine20Value = ReadSpecificLine(20);
+
+                // Setup a timer to periodically check for changes
+                monitoringTimer = new Timer(350); // Check every second
+                monitoringTimer.Elapsed += (s, e) => CheckLine20Changes();
+                monitoringTimer.AutoReset = true;
+                monitoringTimer.Enabled = true;
+                isMonitoringActive = true;
+
+                Console.WriteLine($"Line 20 monitoring started. Initial value: {lastLine20Value}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error setting up line 20 monitoring: {ex.Message}");
+            }
+        }
+        public string printingValueExe()
+        {
+
+            string randomValue = ReadSpecificLine(21);
+            return randomValue;
+
+        }
+        // Check for changes in line 20
+        private void CheckLine20Changes()
+        {
+            if (!isMonitoringActive) return;
+
+            try
+            {
+                string currentValue = ReadSpecificLine(20);
+
+                // Check if the value has changed
+                if (currentValue != lastLine20Value)
+                {
+                    Console.WriteLine($"Line 20 changed from '{lastLine20Value}' to '{currentValue}'");
+
+                    // Save the new value
+                    lastLine20Value = currentValue;
+
+                    // Trigger the event
+                    Line20Changed?.Invoke(this, currentValue);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error checking line 20 changes: {ex.Message}");
+            }
+        }
 
         // Update a setting value
         public void UpdateSetting(SettingIndex index, int value)
@@ -300,8 +364,6 @@ namespace TestingUI3
             GC.SuppressFinalize(this);
         }
 
-
-
         protected virtual void Dispose(bool disposing)
         {
             if (!isDisposed)
@@ -313,6 +375,15 @@ namespace TestingUI3
                         watcher.Changed -= OnFileChanged;
                         watcher.Dispose();
                         watcher = null;
+                    }
+
+                    // Stop and dispose the timer
+                    if (monitoringTimer != null)
+                    {
+                        isMonitoringActive = false;
+                        monitoringTimer.Stop();
+                        monitoringTimer.Dispose();
+                        monitoringTimer = null;
                     }
                 }
 

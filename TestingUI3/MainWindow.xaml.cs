@@ -4,28 +4,34 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-
+using System.Windows.Threading;
 
 namespace TestingUI3
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
+    /// 
     public partial class MainWindow : Window
     {
         private int number = 0;
         private FileSharing fileSharing;
+        // Add these properties for login functionality
+        private bool _isLoggedIn = false;
+        private string _loginUsername = "";
+
 
         // Dictionary to map settings to their numerical values (0-30)
         private Dictionary<string, int> settingValues = new Dictionary<string, int>();
-
         public MainWindow()
         {
             try
             {
 
                 // Initialize component first
+
                 InitializeComponent();
+
                 TextBlock resBlock = this.FindName("ResolutionTextBlock") as TextBlock;
                 if (resBlock != null)
                 {
@@ -35,7 +41,20 @@ namespace TestingUI3
                 InitializeSettingValues();
                 // Initialize file sharing - this creates/reads the settings file
                 fileSharing = new FileSharing();
+                // Subscribe to the Line20Changed event
+                fileSharing.Line20Changed += OnLine20Changed;
+
                 Console.WriteLine($"Settings file located at: {fileSharing.GetSettingsFilePath()}");
+
+                fileSharing.printingValueExe();
+                MessageBox.Show(
+    $"Value: {fileSharing.printingValueExe()}",
+    "random",
+    MessageBoxButton.OK,
+    MessageBoxImage.Information
+    );
+                UserIDText.Text = fileSharing.printingValueExe();
+                ;
                 //LAUNCH SETTINGS-------------------------------------------------------------------------------------------------
                 if (StatusText != null)
                     StatusText.Text = "OFF";
@@ -65,6 +84,165 @@ namespace TestingUI3
 
         }
 
+        private void ExitButton_Click(object sender, RoutedEventArgs e)
+        {
+            Window.GetWindow(this).Close();
+
+
+        }
+        private void NeedHelp_MouseDown(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                // Open the Discord link in the default browser
+                System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+                {
+                    FileName = "https://discord.gg/exodusaim",
+                    UseShellExecute = true
+                });
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Failed to open Discord link: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+        private void SignInButton_Click(object sender, RoutedEventArgs e)
+        {
+            LoginView.Visibility = Visibility.Collapsed;
+            MainAppUI.Visibility = Visibility.Visible;
+
+        }
+        private void BuyOne_MouseDown(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                // Open the Discord link in the default browser
+                System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+                {
+                    FileName = "https://www.exodusprivate.com/",
+                    UseShellExecute = true
+                });
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Failed to open WebSite link: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        // Handle line 20 change event
+        private void OnLine20Changed(object sender, string newValue)
+        {
+            // We need to use Dispatcher.Invoke because this will be called from a non-UI thread
+            this.Dispatcher.Invoke(() =>
+            {
+                if (newValue == "1") //ON 
+                {
+                    StatusToggle.IsChecked = true;
+
+                }
+                if (newValue == "2") //OFF
+                {
+                    StatusToggle.IsChecked = false;
+                }
+                if (newValue == "3" && VandalOption != null)
+                {
+                    // Set Vandal as the selected weapon option
+                    VandalOption.IsChecked = true;
+
+                    // Since IsChecked should trigger the Checked event, the ShootingDelay_Checked 
+                    // method should be called automatically. However, to ensure it works, we can
+                    // also manually update the setting:
+                    if (fileSharing != null && settingValues.ContainsKey("VANDAL"))
+                    {
+                        int value = settingValues["VANDAL"];
+                        fileSharing.UpdateSetting(FileSharing.SettingIndex.ShootingDelay, value);
+                        Console.WriteLine($"Shooting Delay changed to VANDAL ({value}) via Line20 change");
+                    }
+                }
+                if (newValue == "4" && GuardianOption != null)
+                {
+                    // Set Vandal as the selected weapon option
+                    GuardianOption.IsChecked = true;
+
+                    // Since IsChecked should trigger the Checked event, the ShootingDelay_Checked 
+                    // method should be called automatically. However, to ensure it works, we can
+                    // also manually update the setting:
+                    if (fileSharing != null && settingValues.ContainsKey("GUARDIAN"))
+                    {
+                        int value = settingValues["GUARDIAN"];
+                        fileSharing.UpdateSetting(FileSharing.SettingIndex.ShootingDelay, value);
+                        Console.WriteLine($"Shooting Delay changed to GUARDIAN ({value}) via Line20 change");
+                    }
+                }
+                if (newValue == "5" && SherifOption != null)
+                {
+                    // Set Vandal as the selected weapon option
+                    SherifOption.IsChecked = true;
+
+                    // Since IsChecked should trigger the Checked event, the ShootingDelay_Checked 
+                    // method should be called automatically. However, to ensure it works, we can
+                    // also manually update the setting:
+                    if (fileSharing != null && settingValues.ContainsKey("SHERIF"))
+                    {
+                        int value = settingValues["SHERIF"];
+                        fileSharing.UpdateSetting(FileSharing.SettingIndex.ShootingDelay, value);
+                        Console.WriteLine($"Shooting Delay changed to SHERIF ({value}) via Line20 change");
+                    }
+                }
+                if (newValue == "6" && PhantomOption != null)
+                {
+                    // Set Vandal as the selected weapon option
+                    PhantomOption.IsChecked = true;
+
+                    // Since IsChecked should trigger the Checked event, the ShootingDelay_Checked 
+                    // method should be called automatically. However, to ensure it works, we can
+                    // also manually update the setting:
+                    if (fileSharing != null && settingValues.ContainsKey("PHANTOM"))
+                    {
+                        int value = settingValues["PHANTOM"];
+                        fileSharing.UpdateSetting(FileSharing.SettingIndex.ShootingDelay, value);
+                        Console.WriteLine($"Shooting Delay changed to PHANTOM ({value}) via Line20 change");
+                    }
+                }
+                if (newValue == "7" && GhostOption != null)
+                {
+                    // Set Vandal as the selected weapon option
+                    GhostOption.IsChecked = true;
+
+                    // Since IsChecked should trigger the Checked event, the ShootingDelay_Checked 
+                    // method should be called automatically. However, to ensure it works, we can
+                    // also manually update the setting:
+                    if (fileSharing != null && settingValues.ContainsKey("GHOST"))
+                    {
+                        int value = settingValues["GHOST"];
+                        fileSharing.UpdateSetting(FileSharing.SettingIndex.ShootingDelay, value);
+                        Console.WriteLine($"Shooting Delay changed to GHOST ({value}) via Line20 change");
+                    }
+                }
+                if (newValue == "8" && NoDelayOption != null)
+                {
+                    // Set Vandal as the selected weapon option
+                    NoDelayOption.IsChecked = true;
+
+                    // Since IsChecked should trigger the Checked event, the ShootingDelay_Checked 
+                    // method should be called automatically. However, to ensure it works, we can
+                    // also manually update the setting:
+                    if (fileSharing != null && settingValues.ContainsKey("NO DFELAY"))
+                    {
+                        int value = settingValues["NO DFELAY"];
+                        fileSharing.UpdateSetting(FileSharing.SettingIndex.ShootingDelay, value);
+                        Console.WriteLine($"Shooting Delay changed to NO DFELAY ({value}) via Line20 change");
+                    }
+                }
+
+                MessageBox.Show(
+                    $"Line 20 in settings file has changed!\n\nNew value: {newValue}",
+                    "File Change Detected",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Information);
+            });
+        }
+
         private void InitializeSettingValues()
         {
             try
@@ -83,6 +261,7 @@ namespace TestingUI3
                 settingValues["Red"] = 7;
                 settingValues["Purple"] = 14;
                 settingValues["Yellow"] = 21;
+                settingValues["Purple(ReynaUlt)"] = 28;
 
                 // Map pixel range values (1-10) to distinct values between 0-30
                 settingValues["PixelRange1"] = 1;
@@ -180,7 +359,7 @@ namespace TestingUI3
                 if (AudioRangeSlider != null)
                 {
                     if (AudioRangeValue != null)
-                        AudioRangeValue.Text = audioRangeValue.ToString()+"0%";
+                        AudioRangeValue.Text = audioRangeValue.ToString() + "0%";
                 }
 
                 // Shooting Method radio buttons
@@ -206,14 +385,17 @@ namespace TestingUI3
                     PurpleOption.IsChecked = (colorDetection == settingValues["Purple"]);
                 if (YellowOption != null)
                     YellowOption.IsChecked = (colorDetection == settingValues["Yellow"]);
+                if (PurpleReynaUltOption != null)
+                    YellowOption.IsChecked = (colorDetection == settingValues["Purple(ReynaUlt)"]);
 
                 // If no match, default to Red
                 if (colorDetection != settingValues["Red"] &&
                     colorDetection != settingValues["Purple"] &&
                     colorDetection != settingValues["Yellow"] &&
-                    RedOption != null)
+                    colorDetection != settingValues["Purple(ReynaUlt)"] &&
+                    PurpleOption != null)
                 {
-                    RedOption.IsChecked = true;
+                    PurpleOption.IsChecked = true;
                 }
 
                 // Shooting Delay radio buttons
@@ -280,6 +462,11 @@ namespace TestingUI3
                 Console.WriteLine($"Error in SetInitialValues: {ex.Message}");
             }
         }
+        private void MinimizeButton_Click(object sender, RoutedEventArgs e)
+        {
+            Window.GetWindow(this).WindowState = WindowState.Minimized;
+        }
+
 
         private void ShowFirstUI_Click(object sender, RoutedEventArgs e)
         {
@@ -412,6 +599,7 @@ namespace TestingUI3
                 HideAllViews();
                 if (UserInfoView != null)
                     UserInfoView.Visibility = Visibility.Visible;
+                LoadSystemInformation();
             }
             catch (Exception ex)
             {
@@ -419,19 +607,6 @@ namespace TestingUI3
             }
         }
 
-        private void ShowContactUsView_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                HideAllViews();
-                if (ContactUsView != null)
-                    ContactUsView.Visibility = Visibility.Visible;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error in ShowContactUsView_Click: {ex.Message}");
-            }
-        }
 
         private void ShowSettingsView_Click(object sender, RoutedEventArgs e)
         {
@@ -656,7 +831,7 @@ namespace TestingUI3
                 // Update the pixel range value text
                 if (AudioRangeValue != null)
                 {
-                    AudioRangeValue.Text = audioRange.ToString()+"0%";
+                    AudioRangeValue.Text = audioRange.ToString() + "0%";
                 }
 
                 // Calculate the mapped value and update in file
@@ -685,8 +860,7 @@ namespace TestingUI3
             {
                 if (UserInfoView != null)
                     UserInfoView.Visibility = Visibility.Collapsed;
-                if (ContactUsView != null)
-                    ContactUsView.Visibility = Visibility.Collapsed;
+
                 if (SettingsView != null)
                     SettingsView.Visibility = Visibility.Collapsed;
                 if (MacroSettingsView != null)
@@ -784,6 +958,11 @@ namespace TestingUI3
                         value = settingValues["Yellow"];
                         color = "Yellow";
                     }
+                    else if (radioButton == PurpleReynaUltOption)
+                    {
+                        value = settingValues["Purple(ReynaUlt)"];
+                        color = "Purple(ReynaUlt)";
+                    }
 
                     // Update the setting in the file
                     fileSharing.UpdateSetting(FileSharing.SettingIndex.ColorDetection, value);
@@ -795,7 +974,7 @@ namespace TestingUI3
                 Console.WriteLine($"Error in ColorDetection_Checked: {ex.Message}");
             }
         }
-        
+
         // Method to handle shooting delay selection changes with file sharing
         private void ShootingDelay_Checked(object sender, RoutedEventArgs e)
         {
@@ -963,15 +1142,89 @@ namespace TestingUI3
                 Console.WriteLine($"Error in WeaponDelay_TextChanged: {ex.Message}");
             }
         }
+        private void LoadSystemInformation()
+        {
+            try
+            {
+                // Set static values
+                //  if (UserIDText != null)
+                //   UserIDText.Text = "EXODUS no user found";
 
+                if (DiscordServerText != null)
+                    DiscordServerText.Text = "https://discord.gg/exodusaim";
+
+                if (AdminDSText != null)
+                    AdminDSText.Text = "iTERIvEnTAuSTIoNeWaYnaRbandIcuS";
+
+                if (DeveloperDSText != null)
+                    DeveloperDSText.Text = "MrRobot1259";
+
+                // Get operating system info
+                if (SystemOSText != null)
+                    SystemOSText.Text = Environment.OSVersion.VersionString;
+
+                // Get CPU info
+                if (CPUText != null)
+                {
+                    // Use environment variables instead of WMI
+                    string processorId = Environment.GetEnvironmentVariable("PROCESSOR_IDENTIFIER") ?? "";
+                    string processorArch = Environment.GetEnvironmentVariable("PROCESSOR_ARCHITECTURE") ?? "";
+                    CPUText.Text = $"{processorId} ({processorArch})";
+                }
+
+                // Get RAM info
+                if (RAMText != null)
+                {
+                    // Use GC.GetTotalMemory for a rough estimate
+                    long memoryBytes = GC.GetTotalMemory(false);
+                    double memoryGB = Math.Round((double)memoryBytes / (1024 * 1024 * 1024), 2);
+                    RAMText.Text = $"~{memoryGB} GB";
+                }
+
+                // For GPU, we have to set a placeholder since there's no simple way to get it
+                if (GPUText != null)
+                {
+                    GPUText.Text = "Graphics Adapter";
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error loading system information: {ex.Message}");
+                // Set default values if there's an error
+                if (SystemOSText != null) SystemOSText.Text = "Unknown";
+                if (CPUText != null) CPUText.Text = "Unknown";
+                if (GPUText != null) GPUText.Text = "Unknown";
+                if (RAMText != null) RAMText.Text = "Unknown";
+            }
+        }
+
+        private void JoinDiscordButton_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                // Open the Discord link in the default browser
+                System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+                {
+                    FileName = "https://discord.gg/exodusaim",
+                    UseShellExecute = true
+                });
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Failed to open Discord link: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
         // Window closing event to clean up resources
         protected override void OnClosed(EventArgs e)
         {
             try
             {
-                // Clean up file sharing resources
+                // Unsubscribe from events
                 if (fileSharing != null)
                 {
+                    fileSharing.Line20Changed -= OnLine20Changed;
+
+                    // Clean up file sharing resources
                     fileSharing.Dispose();
                     fileSharing = null;
                 }
